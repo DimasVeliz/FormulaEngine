@@ -6,6 +6,7 @@ namespace FormulaEngine
     public enum TokenType
         {
             EOE,
+            Number,
             Addition,
             Substraction,
             Multiplication,
