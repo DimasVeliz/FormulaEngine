@@ -1,2 +1,3 @@
-bin/
-obj/
+FormulaEngine.Logic/bin/
+FormulaEngine.Logic/obj/
+FormulaEngine.Test/obj
