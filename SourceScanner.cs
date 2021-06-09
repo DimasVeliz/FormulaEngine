@@ -13,7 +13,7 @@ namespace FormulaEngine
 
         public SourceScanner(string buffer)
         {
-
+            _buffer = buffer;
         }
 
         public char? Read()
