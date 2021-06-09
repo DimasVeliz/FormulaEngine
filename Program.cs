@@ -6,7 +6,8 @@ namespace FormulaEngine
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var expression ="1+2";
+            System.Console.WriteLine(expression);
         }
     }
 }
