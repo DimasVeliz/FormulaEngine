@@ -9,9 +9,13 @@ namespace FormulaEngine
         readonly string _buffer;
         public int Position { get; private set; }
 
-        public bool EndOfSource => Position >= _buffer.Length; 
+        public bool EndOfSource => Position >= _buffer.Length;
 
-        
+        public SourceScanner(string buffer)
+        {
+
+        }
+
         public char? Read()
         {
             if (EndOfSource)
