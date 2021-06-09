@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FormulaEngine
 {
-    class SourceScanner
+    public class SourceScanner
     {
         readonly Stack<int> PositionStack = new Stack<int>();
         readonly string _buffer;
