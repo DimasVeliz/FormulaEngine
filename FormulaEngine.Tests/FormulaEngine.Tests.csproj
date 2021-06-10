@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FormulaEngine.Logic\FormulaEngine.csproj" />
+    <ProjectReference Include="..\FormulaEngine.Logic\FormulaEngine.Logic.csproj" />
   </ItemGroup>
 
 </Project>

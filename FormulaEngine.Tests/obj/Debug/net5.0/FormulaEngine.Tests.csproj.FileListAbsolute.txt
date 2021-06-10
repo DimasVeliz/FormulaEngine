@@ -1,7 +1,3 @@
-/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/FormulaEngine.deps.json
-/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/FormulaEngine.runtimeconfig.json
-/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/FormulaEngine.runtimeconfig.dev.json
-/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/FormulaEngine
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/xunit.runner.visualstudio.dotnetcore.testadapter.dll
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/xunit.runner.reporters.netcoreapp10.dll
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/xunit.runner.utility.netcoreapp10.dll
@@ -91,8 +87,6 @@
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll
-/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/FormulaEngine.dll
-/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/FormulaEngine.pdb
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/obj/Debug/net5.0/FormulaEngine.Tests.GeneratedMSBuildEditorConfig.editorconfig
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/obj/Debug/net5.0/FormulaEngine.Tests.AssemblyInfoInputs.cache
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/obj/Debug/net5.0/FormulaEngine.Tests.AssemblyInfo.cs
@@ -103,3 +97,5 @@
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/obj/Debug/net5.0/FormulaEngine.Tests.pdb
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/obj/Debug/net5.0/FormulaEngine.Tests.genruntimeconfig.cache
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/obj/Debug/net5.0/FormulaEngine.Tests.csproj.AssemblyReference.cache
+/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/FormulaEngine.Logic.dll
+/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Tests/bin/Debug/net5.0/FormulaEngine.Logic.pdb

@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v5.0": {
       "FormulaEngine.Tests/1.0.0": {
         "dependencies": {
-          "FormulaEngine": "1.0.0",
+          "FormulaEngine.Logic": "1.0.0",
           "Microsoft.NET.Test.Sdk": "16.7.1",
           "coverlet.collector": "1.3.0",
           "xunit": "2.4.1",
@@ -1088,9 +1088,9 @@
         }
       },
       "xunit.runner.visualstudio/2.4.3": {},
-      "FormulaEngine/1.0.0": {
+      "FormulaEngine.Logic/1.0.0": {
         "runtime": {
-          "FormulaEngine.dll": {}
+          "FormulaEngine.Logic.dll": {}
         }
       }
     }
@@ -1738,7 +1738,7 @@
       "path": "xunit.runner.visualstudio/2.4.3",
       "hashPath": "xunit.runner.visualstudio.2.4.3.nupkg.sha512"
     },
-    "FormulaEngine/1.0.0": {
+    "FormulaEngine.Logic/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -1,0 +1,88 @@
+{
+  "version": 3,
+  "targets": {
+    "net5.0": {
+      "FormulaEngine.Logic/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/FormulaEngine.Logic.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FormulaEngine.Logic.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FormulaEngine.Logic/1.0.0": {
+      "type": "project",
+      "path": "../FormulaEngine.Logic/FormulaEngine.Logic.csproj",
+      "msbuildProject": "../FormulaEngine.Logic/FormulaEngine.Logic.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net5.0": [
+      "FormulaEngine.Logic >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "/home/dimas/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.ConsoleUI/FormulaEngine.ConsoleUI.csproj",
+      "projectName": "FormulaEngine.ConsoleUI",
+      "projectPath": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.ConsoleUI/FormulaEngine.ConsoleUI.csproj",
+      "packagesPath": "/home/dimas/.nuget/packages/",
+      "outputPath": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.ConsoleUI/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/home/dimas/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net5.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "projectReferences": {
+            "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Logic/FormulaEngine.Logic.csproj": {
+              "projectPath": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Logic/FormulaEngine.Logic.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net5.0": {
+        "targetAlias": "net5.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.300/RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
