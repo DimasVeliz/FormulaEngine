@@ -1,3 +1,5 @@
 FormulaEngine.Logic/bin/
 FormulaEngine.Logic/obj/
-FormulaEngine.Test/obj
+FormulaEngine.Tests/bin/
+FormulaEngine.Tests/obj/
+
