@@ -1,7 +1,20 @@
 
+using System;
+using System.Collections.Generic;
 
 namespace FormulaEngine.Logic
 {
+    public static class FunctionFactory
+    {
+        public static Dictionary <TokenType,Func<Token,ASTNode,ASTNode,BinaryOperatorASTNode>> Operations = new Dictionary<TokenType,Func<Token,ASTNode,ASTNode,BinaryOperatorASTNode>>()
+        {
+            {TokenType.Addition,(t,l,r)=>new AdditionBinaryOperatorASTNode(t,l,r)},
+            {TokenType.Substraction,(t,l,r)=>new SubstractionBinaryOperatorASTNode(t,l,r)},
+            {TokenType.Multiplication,(t,l,r)=>new MultiplicationBinaryOperatorASTNode(t,l,r)},
+            {TokenType.Division,(t,l,r)=>new DivisionBinaryOperatorASTNode(t,l,r)},
+
+        };
+    }
     /// <summary>
     /// Implements the following Production Rules
     /// EXPRESSION: TERM [('+'|'-') TERM]*
@@ -13,27 +26,79 @@ namespace FormulaEngine.Logic
     /// </summary>
     public static class Parser
     {
+        
         public static ASTNode Parse(string expression)
         {
+            var lexer = new Lexer(new SourceScanner(expression));
 
+            return ParseExpression(lexer);
         }
 
-        public static ASTNode ParseExpression(Lexer lexer)
+        private static ASTNode ParseExpression(Lexer lexer)
         {
+            var left = ParseTerm(lexer);
 
+            var lookahead = lexer.Peek();
+            while (lookahead.Type==TokenType.Addition || lookahead.Type==TokenType.Substraction)
+            {
+                var op = lexer.ReadNext();
+
+                var right = ParseTerm(lexer);
+                
+                left = CreateBinaryOperator(op,left,right);
+
+                lookahead= lexer.Peek();
+            }
+
+
+            return left;
         }
-        public static ASTNode ParseTerm(Lexer lexer)
+
+        ///TERM: FACTOR [('*'|'/') FACTOR]*
+        private static ASTNode ParseTerm(Lexer lexer)
         {
+            var left =ParseFactor(lexer);
 
+            var lookahead = lexer.Peek();
+            while (lookahead.Type==TokenType.Multiplication || lookahead.Type==TokenType.Division)
+            {
+                var op = lexer.ReadNext();
+
+                var right = ParseFactor(lexer);
+                
+                left = CreateBinaryOperator(op,left,right);
+
+                lookahead= lexer.Peek();
+            }
+            
+            return left;
         }
-        public static ASTNode ParseFactor(Lexer lexer)
+        ///FACTOR: NUMBER
+        private static ASTNode ParseFactor(Lexer lexer)
         {
-
+            return ParseNumber(lexer);
         }
-        public static ASTNode ParseNumber(Lexer lexer)
+
+        ///NUMBER: [0-9]+
+        private static ASTNode ParseNumber(Lexer lexer)
         {
+            Expect(lexer, TokenType.Number);
+
+            return new NumberASTNode(lexer.ReadNext());
 
         }
 
+
+        private static ASTNode CreateBinaryOperator(Token op, ASTNode left, ASTNode right)
+        {
+            return FunctionFactory.Operations[op.Type](op,left,right);
+        }
+        private static void Expect(Lexer lexer, TokenType expected)
+        {
+            if (lexer.Peek().Type != expected)
+            {
+                throw new System.Exception($"Expected: {expected} at Position {lexer.Position}");
+            }
+        }
     }
 }

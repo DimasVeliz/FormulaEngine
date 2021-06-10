@@ -10,6 +10,7 @@ namespace FormulaEngine.Logic
 
     public class Lexer
     {
+        public int Position =>_scanner.Position;
         public static Dictionary<char, Func<int, char, Token>> OperatorMap = new Dictionary<char, Func<int, char, Token>>()
         {
             {'+',(p,v)=>new Token(TokenType.Addition,p,v.ToString())},
