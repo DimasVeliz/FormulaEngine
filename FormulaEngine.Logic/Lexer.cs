@@ -24,6 +24,14 @@ namespace FormulaEngine
             _scanner = scanner;
         }
 
+        public Token Peek()
+        {
+            _scanner.Push();
+            var token = ReadNext();
+            _scanner.Pop();
+            return token;
+        }
+
         public Token ReadNext()
         {
             if (_scanner.EndOfSource)
