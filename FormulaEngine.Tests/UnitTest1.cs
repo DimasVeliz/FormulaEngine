@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace FormulaEngine.Test
+namespace FormulaEngine.Tests
 {
     public class UnitTest1
     {
@@ -9,7 +9,7 @@ namespace FormulaEngine.Test
         public void Test1()
         {
             var expression = "1 + 2";
-            (TokenType,int,string)[] expectedResults = new (TokenType,int,string)[]{
+            (TokenType, int, string)[] expectedResults = new (TokenType, int, string)[]{
                 (TokenType.Number,0,"1"),
                 (TokenType.Addition,2,"+"),
                 (TokenType.Number,4,"2")
@@ -18,16 +18,16 @@ namespace FormulaEngine.Test
 
             var lexer = new Lexer(new SourceScanner(expression));
 
-            foreach (var (t,p,v) in expectedResults)
+            foreach (var (t, p, v) in expectedResults)
             {
                 var token = lexer.ReadNext();
-                Assert.Equal(t,token.Type);
-                Assert.Equal(p,token.Position);
-                Assert.Equal(v,token.Value);
+                Assert.Equal(t, token.Type);
+                Assert.Equal(p, token.Position);
+                Assert.Equal(v, token.Value);
 
             }
 
-            Assert.Equal(TokenType.EOE,lexer.ReadNext().Type);
+            Assert.Equal(TokenType.EOE, lexer.ReadNext().Type);
         }
     }
 }

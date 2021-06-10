@@ -18,8 +18,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="../FormulaEngine.Logic/FormulaEngine.csproj"/>
+    <ProjectReference Include="..\FormulaEngine.Logic\FormulaEngine.csproj" />
   </ItemGroup>
 
 </Project>
