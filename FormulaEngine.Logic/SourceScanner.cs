@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FormulaEngine
+namespace FormulaEngine.Logic
 {
     public class SourceScanner
     {

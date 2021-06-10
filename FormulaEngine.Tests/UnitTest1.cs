@@ -1,4 +1,5 @@
 using System;
+using FormulaEngine.Logic;
 using Xunit;
 
 namespace FormulaEngine.Tests
