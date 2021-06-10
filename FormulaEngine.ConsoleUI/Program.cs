@@ -1,4 +1,5 @@
 ﻿using System;
+using FormulaEngine.Logic;
 
 namespace FormulaEngine.ConsoleUI
 {
@@ -6,7 +7,15 @@ namespace FormulaEngine.ConsoleUI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var expression ="1+2/4 -8";
+
+            var lexer = new Lexer(new SourceScanner(expression));
+            
+            while (lexer.Peek().Type!=TokenType.EOE)
+            {
+                var currentToken = lexer.ReadNext();
+                System.Console.WriteLine($"Token of type: {currentToken.Type} with value: {currentToken.Value} at position {currentToken.Position}");
+            }
         }
     }
 }
