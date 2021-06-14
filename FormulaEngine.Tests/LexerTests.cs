@@ -63,7 +63,8 @@ namespace FormulaEngine.Tests
 
             Assert.Equal(expected,lexer.ReadNext().Value);
 
-        } [Fact]
+        } 
+        [Fact]
         public void Test_FP_004()
         {
             var expected = "1e5";

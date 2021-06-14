@@ -27,7 +27,7 @@ namespace FormulaEngine.Logic
             {MINUS,(p,v)=>new Token(TokenType.Substraction,p,v.ToString())},
             {MULTIPLICATION,(p,v)=>new Token(TokenType.Multiplication,p,v.ToString())},
             {DIVISION,(p,v)=>new Token(TokenType.Division,p,v.ToString())},
-            {DECIMAL_SEPARATORS,(p,v)=>new Token(TokenType.Decimal_Separator,p,v.ToString())},
+            
 
 
         };
