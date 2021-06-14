@@ -33,6 +33,47 @@ namespace FormulaEngine.Tests
             Assert.Equal(TokenType.EOE, lexer.ReadNext().Type);
         }
 
+         [Fact]
+        public void Test_FP_001()
+        {
+            var expected = "100";
+
+            Lexer lexer = new Lexer(new SourceScanner(expected));
+
+            Assert.Equal(expected,lexer.ReadNext().Value);
+
+        }
+
+         [Fact]
+        public void Test_FP_002()
+        {
+            var expected = "1.2";
+
+            Lexer lexer = new Lexer(new SourceScanner(expected));
+
+            Assert.Equal(expected,lexer.ReadNext().Value);
+
+        }
+         [Fact]
+        public void Test_FP_003()
+        {
+            var expected = ".5";
+
+            Lexer lexer = new Lexer(new SourceScanner(expected));
+
+            Assert.Equal(expected,lexer.ReadNext().Value);
+
+        } [Fact]
+        public void Test_FP_004()
+        {
+            var expected = "1e5";
+
+            Lexer lexer = new Lexer(new SourceScanner(expected));
+
+            Assert.Equal(expected,lexer.ReadNext().Value);
+
+        }
+
 
         
     }

@@ -66,8 +66,8 @@ namespace FormulaEngine.Logic
 
             if (isNext(OperatorMap.ContainsKey))
             {
-                var op = Accept();
                 var position =Position;
+                var op = Accept();
                 token= OperatorMap[op](position,op);
             }
             return token != null;

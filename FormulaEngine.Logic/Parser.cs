@@ -82,12 +82,18 @@ namespace FormulaEngine.Logic
         ///NUMBER: [0-9]+
         private static ASTNode ParseNumber(Lexer lexer)
         {
-            Expect(lexer, TokenType.Number);
+            var token =lexer.Peek();
+            if (token.Type!=TokenType.Number)
+            {
+                throw new Exception($"Invalid Expression at position:{lexer.Position}");
+            }
 
-            return new NumberASTNode(lexer.ReadNext());
+            Accept(lexer);
+
+            return new NumberASTNode(token);
 
         }
-
+        private static Token Accept(Lexer lexer) => lexer.ReadNext();
 
         private static ASTNode CreateBinaryOperator(Token op, ASTNode left, ASTNode right)
         {
