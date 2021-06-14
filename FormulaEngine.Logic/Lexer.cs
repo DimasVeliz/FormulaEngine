@@ -64,10 +64,11 @@ namespace FormulaEngine.Logic
         {
             token = null;
 
-            var lookahead = _scanner.Peek();
-            if (lookahead.HasValue && OperatorMap.ContainsKey(lookahead.Value))
+            if (isNext(OperatorMap.ContainsKey))
             {
-                token = OperatorMap[lookahead.Value](_scanner.Position, _scanner.Read().Value);
+                var op = Accept();
+                var position =Position;
+                token= OperatorMap[op](position,op);
             }
             return token != null;
 
