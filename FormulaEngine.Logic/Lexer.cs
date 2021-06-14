@@ -153,17 +153,10 @@ namespace FormulaEngine.Logic
             return lookahead.HasValue && match(lookahead.Value);
         }
 
-        bool IsWhiteSpace(char? c) => c.HasValue && char.IsWhiteSpace(c.Value);
-
-
-
-
         private void ConsumeWhiteSpace()
         {
-            while (IsWhiteSpace(_scanner.Peek()))
-            {
-                _scanner.Read();
-            }
+            while (isNext(char.IsWhiteSpace))
+                Accept();
         }
     }
 }
