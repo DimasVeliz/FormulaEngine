@@ -10,8 +10,9 @@ namespace FormulaEngine.Logic
             Addition,
             Substraction,
             Multiplication,
-            Division
-        }
+            Division,
+            Decimal_Separator
+    }
 
     public class Token
     {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FormulaEngine.Logic
@@ -10,13 +11,24 @@ namespace FormulaEngine.Logic
 
     public class Lexer
     {
-        public int Position =>_scanner.Position;
+        const char PLUS = '+';
+        const char MINUS = '-';
+        const char MULTIPLICATION = '*';
+        const char DIVISION = '/';
+        const char DECIMAL_SEPARATORS = '.';
+
+        static readonly char[] E_NOTATION = new char[] { 'e', 'E' };
+        static readonly char[] SIGN_OPERATORS = new char[] { PLUS, MINUS };
+
+        public int Position => _scanner.Position;
         public static Dictionary<char, Func<int, char, Token>> OperatorMap = new Dictionary<char, Func<int, char, Token>>()
         {
-            {'+',(p,v)=>new Token(TokenType.Addition,p,v.ToString())},
-            {'-',(p,v)=>new Token(TokenType.Substraction,p,v.ToString())},
-            {'*',(p,v)=>new Token(TokenType.Multiplication,p,v.ToString())},
-            {'/',(p,v)=>new Token(TokenType.Division,p,v.ToString())},
+            {PLUS,(p,v)=>new Token(TokenType.Addition,p,v.ToString())},
+            {MINUS,(p,v)=>new Token(TokenType.Substraction,p,v.ToString())},
+            {MULTIPLICATION,(p,v)=>new Token(TokenType.Multiplication,p,v.ToString())},
+            {DIVISION,(p,v)=>new Token(TokenType.Division,p,v.ToString())},
+            {DECIMAL_SEPARATORS,(p,v)=>new Token(TokenType.Decimal_Separator,p,v.ToString())},
+
 
         };
         readonly SourceScanner _scanner;
@@ -55,30 +67,95 @@ namespace FormulaEngine.Logic
             var lookahead = _scanner.Peek();
             if (lookahead.HasValue && OperatorMap.ContainsKey(lookahead.Value))
             {
-                token= OperatorMap[lookahead.Value](_scanner.Position,_scanner.Read().Value);
+                token = OperatorMap[lookahead.Value](_scanner.Position, _scanner.Read().Value);
             }
             return token != null;
 
         }
+
+        /// <summary>
+        /// example: 1 110 1.5 .7 1e5 2e-7 
+        /// regex : \d+ .? \d+ ([eE] [+ -]? \d+)?
+        ///  
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private bool TryTokenizeNumber(out Token token)
         {
             token = null;
+            var sb = new StringBuilder();
+            var position = Position;
 
-            if (IsDigit(_scanner.Peek()))
+            sb.Append(ReadDigits());  // \d+ 
+
+            if (isNext(DECIMAL_SEPARATORS))
             {
-                var position = _scanner.Position;
-                var sBuilder= new StringBuilder();
-                while (IsDigit(_scanner.Peek()))
-                {
-                    sBuilder.Append(_scanner.Read().Value);
-                }
-                token = new Token(TokenType.Number,position,sBuilder.ToString());
+                sb.Append(Accept());  //.? 
             }
 
+            sb.Append(ReadDigits());   // \d+ 
+
+
+            if (sb.Length!=0 && char.IsDigit(sb[sb.Length-1])&& isNext(E_NOTATION))
+            {
+                sb.Append(Accept()); //[eE]
+
+                if (isNext(SIGN_OPERATORS))
+                {
+                    sb.Append(Accept());  // [+ -]? 
+                }
+
+                Expect(char.IsDigit);
+
+                sb.Append(ReadDigits()); // \d+
+            }
+
+
+            if (sb.Length > 0)
+            {
+                token = new Token(TokenType.Number, position, sb.ToString());
+            }
+            if (token != null && !double.TryParse(token.Value, out _))
+            {
+                throw new Exception($"Invalid numeric value/format found at position{token.Position}");
+            }
             return token != null;
         }
+
+        private void Expect(Func<char, bool> match)
+        {
+            if (!isNext(match))
+            {
+                throw new Exception($"Unexpected value at position {Position}");
+            };
+        }
+
+        private string ReadDigits()
+        {
+            var sb = new StringBuilder();
+            while (isNext(char.IsDigit))
+            {
+                sb.Append(Accept());
+            }
+
+            return sb.ToString();
+        }
+
+        private char Accept() => _scanner.Read().Value;
+
+        private bool isNext(params char[] possibleValues)
+        {
+            return isNext(x => possibleValues.Any(pV => pV == x));
+        }
+        private bool isNext(Func<char, bool> match)
+        {
+            var lookahead = _scanner.Peek();
+            return lookahead.HasValue && match(lookahead.Value);
+        }
+
         bool IsWhiteSpace(char? c) => c.HasValue && char.IsWhiteSpace(c.Value);
-        bool IsDigit(char? c) => c.HasValue && char.IsDigit(c.Value);
+
+
 
 
         private void ConsumeWhiteSpace()
