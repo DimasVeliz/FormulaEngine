@@ -4,7 +4,7 @@ namespace FormulaEngine.Logic
     {
         public static double Evaluate(string expression)
         {
-            var astRoot = Parser.Parse(expression);
+            var astRoot = new Parser(new Lexer(new SourceScanner(expression))).Parse(expression);
 
             return Evaluate(astRoot as dynamic);
         }

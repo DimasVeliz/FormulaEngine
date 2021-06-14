@@ -24,26 +24,31 @@ namespace FormulaEngine.Logic
     /// 
     /// An expression expanded: => (Factor *|/ Factor) (+|-) (Factor *|/ Factor)
     /// </summary>
-    public static class Parser
+    public  class Parser
     {
-        
-        public static ASTNode Parse(string expression)
-        {
-            var lexer = new Lexer(new SourceScanner(expression));
+        private readonly Lexer lexer;
 
-            return ParseExpression(lexer);
+        public Parser(Lexer lexer)
+        {
+            this.lexer = lexer;
+        }
+        
+        public  ASTNode Parse(string expression)
+        {
+            
+            return ParseExpression();
         }
 
-        private static ASTNode ParseExpression(Lexer lexer)
+        private  ASTNode ParseExpression()
         {
-            var left = ParseTerm(lexer);
+            var left = ParseTerm();
 
             var lookahead = lexer.Peek();
             while (lookahead.Type==TokenType.Addition || lookahead.Type==TokenType.Substraction)
             {
                 var op = lexer.ReadNext();
 
-                var right = ParseTerm(lexer);
+                var right = ParseTerm();
                 
                 left = CreateBinaryOperator(op,left,right);
 
@@ -55,16 +60,16 @@ namespace FormulaEngine.Logic
         }
 
         ///TERM: FACTOR [('*'|'/') FACTOR]*
-        private static ASTNode ParseTerm(Lexer lexer)
+        private  ASTNode ParseTerm()
         {
-            var left =ParseFactor(lexer);
+            var left =ParseFactor();
 
             var lookahead = lexer.Peek();
             while (lookahead.Type==TokenType.Multiplication || lookahead.Type==TokenType.Division)
             {
                 var op = lexer.ReadNext();
 
-                var right = ParseFactor(lexer);
+                var right = ParseFactor();
                 
                 left = CreateBinaryOperator(op,left,right);
 
@@ -74,13 +79,13 @@ namespace FormulaEngine.Logic
             return left;
         }
         ///FACTOR: NUMBER
-        private static ASTNode ParseFactor(Lexer lexer)
+        private  ASTNode ParseFactor()
         {
-            return ParseNumber(lexer);
+            return ParseNumber();
         }
 
         ///NUMBER: [0-9]+
-        private static ASTNode ParseNumber(Lexer lexer)
+        private  ASTNode ParseNumber()
         {
             var token =lexer.Peek();
             if (token.Type!=TokenType.Number)
@@ -88,18 +93,18 @@ namespace FormulaEngine.Logic
                 throw new Exception($"Invalid Expression at position:{lexer.Position}");
             }
 
-            Accept(lexer);
+            Accept();
 
             return new NumberASTNode(token);
 
         }
-        private static Token Accept(Lexer lexer) => lexer.ReadNext();
+        private  Token Accept() => lexer.ReadNext();
 
-        private static ASTNode CreateBinaryOperator(Token op, ASTNode left, ASTNode right)
+        private  ASTNode CreateBinaryOperator(Token op, ASTNode left, ASTNode right)
         {
             return FunctionFactory.Operations[op.Type](op,left,right);
         }
-        private static void Expect(Lexer lexer, TokenType expected)
+        private  void Expect(TokenType expected)
         {
             if (lexer.Peek().Type != expected)
             {
