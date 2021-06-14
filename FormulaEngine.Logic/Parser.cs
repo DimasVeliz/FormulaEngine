@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FormulaEngine.Logic
 {
@@ -98,6 +99,12 @@ namespace FormulaEngine.Logic
             return new NumberASTNode(token);
 
         }
+
+        private bool isNext(params TokenType[] possibleTokens)
+        {
+            return isNext(x=>possibleTokens.Any(pT =>pT==x));
+        }
+        private bool isNext( Predicate<TokenType> match)=>match(lexer.Peek().Type);
         private  Token Accept() => lexer.ReadNext();
 
         private  ASTNode CreateBinaryOperator(Token op, ASTNode left, ASTNode right)
