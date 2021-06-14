@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+uGU6Zbzy4zKGTFdjyaADYU2hoc2zk3DLIHe6NB8tO02zy4ClYGF+5Ofv69qE8r6eUU1xKmghyK9Aq1ZFvE5wA==",
+  "dgSpecHash": "5tzOy8Tsy5IUjBXvwBYt+Eqc8v6uUwSWNR6S9v8obJ9/O/Le59gMzZcamjHOJnyzIDdWtqUjKRxq8/ekE2zHEA==",
   "success": true,
-  "projectFilePath": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.ConsoleUI/FormulaEngine.ConsoleUI.csproj",
+  "projectFilePath": "/home/dimas/FormulaEngine/FormulaEngine.ConsoleUI/FormulaEngine.ConsoleUI.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

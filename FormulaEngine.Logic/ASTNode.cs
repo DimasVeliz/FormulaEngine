@@ -17,7 +17,7 @@ namespace FormulaEngine.Logic
 
     public class NumberASTNode : ASTNode
     {
-        public int Value => int.Parse(Token.Value);
+        public double Value => double.Parse(Token.Value);
         public NumberASTNode(Token token) : base(token)
         {
         }
