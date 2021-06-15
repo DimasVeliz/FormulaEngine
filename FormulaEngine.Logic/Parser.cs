@@ -20,10 +20,7 @@ namespace FormulaEngine.Logic
     /// Implements the following Production Rules
     /// EXPRESSION: TERM [('+'|'-') TERM]*
     ///     TERM: FACTOR [('*'|'/') FACTOR]*
-    ///     FACTOR: NUMBER
-    ///     NUMBER: [0-9]+
-    /// 
-    /// An expression expanded: => (Factor *|/ Factor) (+|-) (Factor *|/ Factor)
+    ///     FACTOR: '(' EXPRESSION ')' | NUMBER
     /// </summary>
     public class Parser
     {
@@ -71,7 +68,7 @@ namespace FormulaEngine.Logic
                 left = CreateBinaryOperator(op, left, right);
             }
 
-            return left;;
+            return left; ;
         }
         ///FACTOR: NUMBER
         private ASTNode ParseFactor()

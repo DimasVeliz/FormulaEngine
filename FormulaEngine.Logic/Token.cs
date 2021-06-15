@@ -11,7 +11,11 @@ namespace FormulaEngine.Logic
             Substraction,
             Multiplication,
             Division,
-            Decimal_Separator
+            Decimal_Separator,
+
+            OpenParen,
+
+            CloseParen
     }
 
     public class Token

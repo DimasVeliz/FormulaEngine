@@ -17,16 +17,25 @@ namespace FormulaEngine.Logic
         const char DIVISION = '/';
         const char DECIMAL_SEPARATORS = '.';
 
+        const char OPEN_PAREN = '(';
+
+        const char CLOSE_PAREN = ')';
+
+
+
         static readonly char[] E_NOTATION = new char[] { 'e', 'E' };
         static readonly char[] SIGN_OPERATORS = new char[] { PLUS, MINUS };
 
         public int Position => _scanner.Position;
-        public static Dictionary<char, Func<int, char, Token>> OperatorMap = new Dictionary<char, Func<int, char, Token>>()
+        public static Dictionary<char, Func<int, char, Token>> SimpleTokenMap = new Dictionary<char, Func<int, char, Token>>()
         {
             {PLUS,(p,v)=>new Token(TokenType.Addition,p,v.ToString())},
             {MINUS,(p,v)=>new Token(TokenType.Substraction,p,v.ToString())},
             {MULTIPLICATION,(p,v)=>new Token(TokenType.Multiplication,p,v.ToString())},
             {DIVISION,(p,v)=>new Token(TokenType.Division,p,v.ToString())},
+            {OPEN_PAREN,(p,v)=>new Token(TokenType.OpenParen,p,v.ToString())},
+            {CLOSE_PAREN,(p,v)=>new Token(TokenType.CloseParen,p,v.ToString())},
+
             
 
 
@@ -64,11 +73,11 @@ namespace FormulaEngine.Logic
         {
             token = null;
 
-            if (isNext(OperatorMap.ContainsKey))
+            if (isNext(SimpleTokenMap.ContainsKey))
             {
                 var position =Position;
                 var op = Accept();
-                token= OperatorMap[op](position,op);
+                token= SimpleTokenMap[op](position,op);
             }
             return token != null;
 
