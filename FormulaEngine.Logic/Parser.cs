@@ -10,7 +10,7 @@ namespace FormulaEngine.Logic
         public static Dictionary<TokenType, Func<Token, ASTNode, ASTNode, BinaryOperatorASTNode>> Operations = new Dictionary<TokenType, Func<Token, ASTNode, ASTNode, BinaryOperatorASTNode>>()
         {
             {TokenType.Addition,(t,l,r)=>new AdditionBinaryOperatorASTNode(t,l,r)},
-            {TokenType.Substraction,(t,l,r)=>new SubstractionBinaryOperatorASTNode(t,l,r)},
+            {TokenType.Minus,(t,l,r)=>new SubstractionBinaryOperatorASTNode(t,l,r)},
             {TokenType.Multiplication,(t,l,r)=>new MultiplicationBinaryOperatorASTNode(t,l,r)},
             {TokenType.Division,(t,l,r)=>new DivisionBinaryOperatorASTNode(t,l,r)},
 
@@ -24,7 +24,7 @@ namespace FormulaEngine.Logic
     /// </summary>
     public class Parser
     {
-        static readonly TokenType[] TERM_OPERATORS = new TokenType[] { TokenType.Addition, TokenType.Substraction };
+        static readonly TokenType[] TERM_OPERATORS = new TokenType[] { TokenType.Addition, TokenType.Minus };
         static readonly TokenType[] FACTOR_OPERATORS = new TokenType[] { TokenType.Multiplication, TokenType.Division };
 
         private readonly Lexer lexer;

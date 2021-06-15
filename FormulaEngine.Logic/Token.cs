@@ -8,14 +8,16 @@ namespace FormulaEngine.Logic
             EOE,
             Number,
             Addition,
-            Substraction,
+            Minus,
             Multiplication,
             Division,
             Decimal_Separator,
 
             OpenParen,
 
-            CloseParen
+            CloseParen,
+
+            Factorial
     }
 
     public class Token
