@@ -1,8 +1,8 @@
-FormulaEngine.Logic/bin/
-FormulaEngine.Logic/obj/
-FormulaEngine.Tests/bin/
-FormulaEngine.Tests/obj/
-FormulaEngine.ConsoleUI/bin/
-FormulaEngine.ConsoleUI/obj/
+FormulaEngine/FormulaEngine.Logic/bin/
+FormulaEngine/FormulaEngine.Logic/obj/
+FormulaEngine/FormulaEngine.Tests/bin/
+FormulaEngine/FormulaEngine.Tests/obj/
+FormulaEngine/FormulaEngine.ConsoleUI/bin/
+FormulaEngine/FormulaEngine.ConsoleUI/obj/
 
 

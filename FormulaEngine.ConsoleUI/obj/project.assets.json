@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/dimas/FormulaEngine/FormulaEngine.ConsoleUI/FormulaEngine.ConsoleUI.csproj",
+      "projectUniqueName": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.ConsoleUI/FormulaEngine.ConsoleUI.csproj",
       "projectName": "FormulaEngine.ConsoleUI",
-      "projectPath": "/home/dimas/FormulaEngine/FormulaEngine.ConsoleUI/FormulaEngine.ConsoleUI.csproj",
+      "projectPath": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.ConsoleUI/FormulaEngine.ConsoleUI.csproj",
       "packagesPath": "/home/dimas/.nuget/packages/",
-      "outputPath": "/home/dimas/FormulaEngine/FormulaEngine.ConsoleUI/obj/",
+      "outputPath": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.ConsoleUI/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/dimas/.nuget/NuGet/NuGet.Config"
@@ -51,8 +51,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "/home/dimas/FormulaEngine/FormulaEngine.Logic/FormulaEngine.Logic.csproj": {
-              "projectPath": "/home/dimas/FormulaEngine/FormulaEngine.Logic/FormulaEngine.Logic.csproj"
+            "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Logic/FormulaEngine.Logic.csproj": {
+              "projectPath": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Logic/FormulaEngine.Logic.csproj"
             }
           }
         }
@@ -81,7 +81,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.300/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
       }
     }
   }

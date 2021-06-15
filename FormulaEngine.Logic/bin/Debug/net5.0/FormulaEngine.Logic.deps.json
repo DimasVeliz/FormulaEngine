@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "FormulaEngine.Logic/1.0.0": {
+        "runtime": {
+          "FormulaEngine.Logic.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FormulaEngine.Logic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
