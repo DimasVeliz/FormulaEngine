@@ -104,5 +104,17 @@ namespace FormulaEngine.Tests
             Assert.Equal(-6, result);
         }
 
+        [Fact]
+        public void EvaluationTest_Factorial004()
+        {
+            var expression = "-(3 + 2)!";
+            //When
+            var result = EvaluationEngine.Evaluate(expression);
+
+
+            //Then
+            Assert.Equal(-120, result);
+        }
+
     }
 }
