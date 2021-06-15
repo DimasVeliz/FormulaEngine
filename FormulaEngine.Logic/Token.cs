@@ -12,11 +12,8 @@ namespace FormulaEngine.Logic
             Multiplication,
             Division,
             Decimal_Separator,
-
             OpenParen,
-
             CloseParen,
-
             Factorial
     }
 

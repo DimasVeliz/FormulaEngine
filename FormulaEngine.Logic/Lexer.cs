@@ -20,6 +20,8 @@ namespace FormulaEngine.Logic
         const char OPEN_PAREN = '(';
 
         const char CLOSE_PAREN = ')';
+        const char FACTORIAL = '!';
+
 
 
 
@@ -35,6 +37,8 @@ namespace FormulaEngine.Logic
             {DIVISION,(p,v)=>new Token(TokenType.Division,p,v.ToString())},
             {OPEN_PAREN,(p,v)=>new Token(TokenType.OpenParen,p,v.ToString())},
             {CLOSE_PAREN,(p,v)=>new Token(TokenType.CloseParen,p,v.ToString())},
+            {FACTORIAL,(p,v)=>new Token(TokenType.Factorial,p,v.ToString())},
+
 
             
 

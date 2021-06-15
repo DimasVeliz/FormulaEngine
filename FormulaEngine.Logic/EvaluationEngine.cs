@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace FormulaEngine.Logic
 {
     public static class EvaluationEngine
@@ -19,7 +21,18 @@ namespace FormulaEngine.Logic
         public static double Evaluate(DivisionBinaryOperatorASTNode node) =>
         Evaluate(node.Left as dynamic) / Evaluate(node.Right as dynamic);
 
-
+        public static double Evaluate(FactorialUnaryOperatorASTNode node) 
+        {
+            int fact(int x) => x==0? 1: x*fact(x-1);
+            int value = (int)Evaluate(node.Target as dynamic);
+            if (value<0)
+            {
+                throw new System.Exception("Factorial supported only for Non Negative numbers");
+            }
+            return fact(value);
+        }
+        public static double Evaluate(NegationUnaryOperatorASTNode node) =>
+        -1 * Evaluate(node.Target as dynamic);
 
     }
 }

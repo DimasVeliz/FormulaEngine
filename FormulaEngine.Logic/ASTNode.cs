@@ -31,6 +31,30 @@ namespace FormulaEngine.Logic
         }
     }
 
+    public abstract class UnaryOperatorASTNode : ASTNode
+    {
+
+        public UnaryOperatorASTNode(Token token,ASTNode target) : base(token)
+        {
+            Target = target;
+        }
+
+        public ASTNode Target { get; }
+    }
+
+    public class FactorialUnaryOperatorASTNode : UnaryOperatorASTNode
+    {
+        public FactorialUnaryOperatorASTNode(Token token, ASTNode target) : base(token, target)
+        {
+        }
+    }
+    public class NegationUnaryOperatorASTNode : UnaryOperatorASTNode
+    {
+        public NegationUnaryOperatorASTNode(Token token, ASTNode target) : base(token, target)
+        {
+        }
+    }
+
     public abstract class BinaryOperatorASTNode : OperatorASTNode
     {
         

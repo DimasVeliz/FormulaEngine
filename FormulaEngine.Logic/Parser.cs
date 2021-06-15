@@ -20,7 +20,11 @@ namespace FormulaEngine.Logic
     /// Implements the following Production Rules
     /// EXPRESSION: TERM [('+'|'-') TERM]*
     ///     TERM: FACTOR [('*'|'/') FACTOR]*
-    ///     FACTOR: '(' EXPRESSION ')' | NUMBER
+    ///     FACTOR: '-'? FACTORIAL_FACTOR
+    ///     EXPONENT: 
+    ///     FACTORIAL_FACTOR: PRIMARY '!'?
+    ///     PRIMARY: SUB_EXPRESSION | NUMBER
+    ///     SUB_EXPRESSION: '(' EXPRESSION ')'
     /// </summary>
     public class Parser
     {
@@ -72,34 +76,74 @@ namespace FormulaEngine.Logic
         }
 
 
-        ///FACTOR: '(' EXPRESSION ')' | NUMBER
-
+        ///     FACTOR: '-'? FACTORIAL_FACTOR
+       
         private ASTNode ParseFactor()
         {
+            ASTNode node = default;
+            if (isNext(TokenType.Minus))
+            {
+                node = new NegationUnaryOperatorASTNode(Accept(), ParseFactorialFactor());
+            }
+            else
+            {
+                node = ParseFactorialFactor();
+            }
+            return node;
+        }
+
+        ///     FACTORIAL_FACTOR: PRIMARY '!'?
+        private ASTNode ParseFactorialFactor()
+        {
+            ASTNode node = ParsePrimary();
+            if (isNext(TokenType.Factorial))
+            {
+                node = new FactorialUnaryOperatorASTNode(Accept(), node);
+            }
+            return node;
+        }
+
+
+        private ASTNode ParsePrimary()
+        {
             ASTNode node;
+
+            if (TryParseNumber(out node))
+            {
+                return node;
+            }
+
+            if (TryParseSubExpression(out node))
+            {
+                return node;
+            }
+
+            throw new Exception($"Invalid Expression, Expected number or open paren at {lexer.Position}");
+        }
+        ///NUMBER: [0-9]+
+        private bool TryParseNumber(out ASTNode node)
+        {
+            node = null;
+            if (isNext(TokenType.Number))
+            {
+                node = new NumberASTNode(Accept());
+            }
+
+            return node != null;
+
+        }
+
+        private bool TryParseSubExpression(out ASTNode node)
+        {
+            node = null;
             if (isNext(TokenType.OpenParen))
             {
                 Accept(); //consumes the open parent ( 
                 node = ParseExpression();
                 Expect(TokenType.CloseParen);
                 Accept(); //consumes the close parent )
-
             }
-            else
-            {
-
-                node = ParseNumber();
-            }
-            return node;
-        }
-
-        ///NUMBER: [0-9]+
-        private ASTNode ParseNumber()
-        {
-            Expect(TokenType.Number);
-
-
-            return new NumberASTNode(Accept());
+            return node != null;
 
         }
 
