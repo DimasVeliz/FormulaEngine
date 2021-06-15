@@ -70,10 +70,27 @@ namespace FormulaEngine.Logic
 
             return left; ;
         }
-        ///FACTOR: NUMBER
+
+
+        ///FACTOR: '(' EXPRESSION ')' | NUMBER
+
         private ASTNode ParseFactor()
         {
-            return ParseNumber();
+            ASTNode node;
+            if (isNext(TokenType.OpenParen))
+            {
+                Accept(); //consumes the open parent ( 
+                node = ParseExpression();
+                Expect(TokenType.CloseParen);
+                Accept(); //consumes the close parent )
+
+            }
+            else
+            {
+
+                node = ParseNumber();
+            }
+            return node;
         }
 
         ///NUMBER: [0-9]+

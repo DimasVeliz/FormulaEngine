@@ -61,7 +61,7 @@ namespace FormulaEngine.Logic
             ConsumeWhiteSpace();
 
             Token token;
-            if (TryTokenizeOperator(out token))
+            if (TryTokenizeSimpleToken(out token))
                 return token;
 
             if (TryTokenizeNumber(out token))
@@ -69,7 +69,7 @@ namespace FormulaEngine.Logic
 
             throw new Exception($"Unexpected character{_scanner.Peek() } found at possition {_scanner.Position}");
         }
-        private bool TryTokenizeOperator(out Token token)
+        private bool TryTokenizeSimpleToken(out Token token)
         {
             token = null;
 
