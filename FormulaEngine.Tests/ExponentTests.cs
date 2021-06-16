@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FormulaEngine.Logic;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2^3";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -26,7 +27,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2^(2+3)";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -38,7 +39,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "(1 + 2)^ 3";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -50,7 +51,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2 ^( 2^3)";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -63,7 +64,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "( 2^3)^2";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -75,7 +76,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2^2^3";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -88,7 +89,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2 ^3!^2";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then

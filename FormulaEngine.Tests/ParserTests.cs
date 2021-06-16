@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FormulaEngine.Logic;
 using Xunit;
 
@@ -12,8 +13,8 @@ namespace FormulaEngine.Tests
         {
             var expression = "1 + 2";
 
-            var ast = (BinaryOperatorASTNode)new Parser(new Lexer(new SourceScanner(expression))).Parse(expression);
-;
+            var ast = (BinaryOperatorASTNode)new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse(expression);
+            ;
             Assert.NotNull(ast);
 
             Assert.Equal(TokenType.Addition, ast.Token.Type);
@@ -30,7 +31,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "1 + 2*3";
 
-            var ast = (BinaryOperatorASTNode)new Parser(new Lexer(new SourceScanner(expression))).Parse(expression);
+            var ast = (BinaryOperatorASTNode)new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse(expression);
 
 
             Assert.NotNull(ast);
@@ -48,15 +49,48 @@ namespace FormulaEngine.Tests
             Assert.Equal(3, ((ast.Right as BinaryOperatorASTNode).Right as NumberASTNode).Value);
 
         }
-        [Fact]        
+        [Fact]
         public void ParserTest03()
         {
             var expression = "1 +";
 
-           
 
-            Assert.Throws<Exception>(()=>new Parser(new Lexer(new SourceScanner(expression))).Parse(expression));
 
+            Assert.Throws<Exception>(() => new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse(expression));
+
+
+        }
+
+
+        [Fact]
+        public void ParserTestVariables()
+        {
+            var expression = "1 + x*2";
+
+            var engine = new EvaluationEngine();
+            var variablesInvolved = new List<VNameValue>()
+            {
+                new VNameValue{Name="x", Value=5}
+            };
+            var result = engine.Evaluate(expression,variablesInvolved);
+
+            Assert.Equal(11,result);
+
+        }
+
+        [Fact]
+        public void ParserTestVariables2()
+        {
+            var expression = "x! + x*2";
+
+            var engine = new EvaluationEngine();
+            var variablesInvolved = new List<VNameValue>()
+            {
+                new VNameValue{Name="x", Value=5}
+            };
+            var result = engine.Evaluate(expression,variablesInvolved);
+
+            Assert.Equal(130,result);
 
         }
     }

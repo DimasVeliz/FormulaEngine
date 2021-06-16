@@ -15,6 +15,22 @@ namespace FormulaEngine.Logic
 
     }
 
+    public abstract class IdentifierASTNode : ASTNode
+    {
+
+        protected IdentifierASTNode(Token token,string name) : base(token)
+        {
+            Name = name;
+        }
+
+        public string Name { get; }
+    }
+    public class VariableIdentifierASTNode : IdentifierASTNode
+    {
+        public VariableIdentifierASTNode(Token token,string name) : base(token,name)
+        {
+        }
+    }
     public class NumberASTNode : ASTNode
     {
         public double Value => double.Parse(Token.Value);

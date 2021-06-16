@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FormulaEngine.Logic;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "1 + 2 * 3";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -25,7 +26,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "1 + 1e5";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -37,7 +38,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "(1 + 2)*3";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -49,7 +50,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "5*(3+1)";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -61,7 +62,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "(1 + 2)*3*4";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -73,7 +74,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "5!";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -85,7 +86,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "-5!";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -97,7 +98,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "-1*(1 + 2)!";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then
@@ -109,7 +110,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "-(3 + 2)!";
             //When
-            var result = EvaluationEngine.Evaluate(expression);
+            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
 
 
             //Then

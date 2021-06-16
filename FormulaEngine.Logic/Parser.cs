@@ -23,7 +23,10 @@ namespace FormulaEngine.Logic
     ///     FACTOR: '-'? EXPONENT
     ///     EXPONENT: FACTORIAL_FACTOR [ '^' EXPONENT]*
     ///     FACTORIAL_FACTOR: PRIMARY '!'?
-    ///     PRIMARY: SUB_EXPRESSION | NUMBER
+    ///     PRIMARY 
+    ///             : IDENTIFIER 
+    ///             | SUB_EXPRESSION 
+    ///             | NUMBER
     ///     SUB_EXPRESSION: '(' EXPRESSION ')'
     /// </summary>
     public class Parser
@@ -32,10 +35,12 @@ namespace FormulaEngine.Logic
         static readonly TokenType[] FACTOR_OPERATORS = new TokenType[] { TokenType.Multiplication, TokenType.Division };
 
         private readonly Lexer lexer;
+        private readonly SymbolTable _symbolTable;
 
-        public Parser(Lexer lexer)
+        public Parser(Lexer lexer, SymbolTable symbolTable)
         {
             this.lexer = lexer;
+            this._symbolTable = symbolTable;
         }
 
         public ASTNode Parse(string expression)
@@ -97,7 +102,7 @@ namespace FormulaEngine.Logic
             if (isNext(TokenType.Exponent))
             {
                 var op = Accept(); //consuming the ^ to call the factory later
-                node = new ExponentBinaryOperatorASTNode(op,node,ParseExponent());
+                node = new ExponentBinaryOperatorASTNode(op, node, ParseExponent());
             }
             return node;
         }
@@ -113,10 +118,15 @@ namespace FormulaEngine.Logic
             return node;
         }
 
-
+        ///PRIMARY: IDENTIFIER | SUB_EXPRESSION  | NUMBER
         private ASTNode ParsePrimary()
         {
             ASTNode node;
+
+            if (TryParseIdentifier(out node))
+            {
+                return node;
+            }
 
             if (TryParseNumber(out node))
             {
@@ -130,6 +140,32 @@ namespace FormulaEngine.Logic
 
             throw new Exception($"Invalid Expression, Expected number or open paren at {lexer.Position}");
         }
+
+        private bool TryParseIdentifier(out ASTNode node)
+        {
+            node = null;
+            if (isNext(TokenType.Identifier))
+            {
+                var token = Accept();
+                var entry= _symbolTable.Get(token.Value);
+                if (entry == null)
+                {
+                    throw new Exception($"Undefined Identifier {token.Value} at position: {token.Position}");
+
+                }
+                if (entry.Type == EntryType.Variable)
+                {
+                    node = new VariableIdentifierASTNode(token, token.Value);
+                }
+
+                else
+                {
+                    //TODO: is a function
+                }
+            }
+            return node != null;
+        }
+
         ///NUMBER: [0-9]+
         private bool TryParseNumber(out ASTNode node)
         {

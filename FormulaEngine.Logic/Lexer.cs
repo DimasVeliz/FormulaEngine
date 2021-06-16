@@ -75,6 +75,9 @@ namespace FormulaEngine.Logic
             if (TryTokenizeNumber(out token))
                 return token;
 
+            if (TryTokenizeIdentifier(out token))
+                return token;
+
             throw new Exception($"Unexpected character{_scanner.Peek() } found at possition {_scanner.Position}");
         }
         private bool TryTokenizeSimpleToken(out Token token)
@@ -157,6 +160,36 @@ namespace FormulaEngine.Logic
             }
 
             return sb.ToString();
+        }
+
+
+        /// identifiers => _? [a-zA-Z][a-zA-Z0-9_]*
+        private bool TryTokenizeIdentifier(out Token token)
+        {
+            token = null;
+            var sb = new StringBuilder();
+
+            if (isNext('_'))
+            {
+                sb.Append(Accept());
+                Expect(char.IsLetter);
+            }
+            if (isNext(char.IsLetter))
+            {
+                sb.Append(Accept());
+                while (isNext(x => (char.IsLetterOrDigit(x)) || x == '_'))
+                {
+                    sb.Append(Accept());
+                }
+            }
+
+            if (sb.Length > 0)
+            {
+                token = new Token(TokenType.Identifier, Position, sb.ToString());
+            }
+
+
+            return token != null;
         }
 
         private char Accept() => _scanner.Read().Value;
