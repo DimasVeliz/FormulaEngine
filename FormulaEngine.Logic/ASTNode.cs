@@ -69,6 +69,13 @@ namespace FormulaEngine.Logic
 
     }
 
+    public class ExponentBinaryOperatorASTNode : BinaryOperatorASTNode
+    {
+        public ExponentBinaryOperatorASTNode(Token token, ASTNode left, ASTNode right) : base(token, left, right)
+        {
+        }
+    }
+
     public class AdditionBinaryOperatorASTNode : BinaryOperatorASTNode
     {
         public AdditionBinaryOperatorASTNode(Token token, ASTNode left, ASTNode right) : base(token, left, right)

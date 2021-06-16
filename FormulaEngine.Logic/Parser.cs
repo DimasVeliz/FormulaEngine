@@ -20,8 +20,8 @@ namespace FormulaEngine.Logic
     /// Implements the following Production Rules
     /// EXPRESSION: TERM [('+'|'-') TERM]*
     ///     TERM: FACTOR [('*'|'/') FACTOR]*
-    ///     FACTOR: '-'? FACTORIAL_FACTOR
-    ///     EXPONENT: 
+    ///     FACTOR: '-'? EXPONENT
+    ///     EXPONENT: FACTORIAL_FACTOR [ '^' EXPONENT]*
     ///     FACTORIAL_FACTOR: PRIMARY '!'?
     ///     PRIMARY: SUB_EXPRESSION | NUMBER
     ///     SUB_EXPRESSION: '(' EXPRESSION ')'
@@ -76,18 +76,28 @@ namespace FormulaEngine.Logic
         }
 
 
-        ///     FACTOR: '-'? FACTORIAL_FACTOR
-       
+        ///   FACTOR: '-'? EXPONENT
         private ASTNode ParseFactor()
         {
             ASTNode node = default;
             if (isNext(TokenType.Minus))
             {
-                node = new NegationUnaryOperatorASTNode(Accept(), ParseFactorialFactor());
+                node = new NegationUnaryOperatorASTNode(Accept(), ParseExponent());
             }
             else
             {
-                node = ParseFactorialFactor();
+                node = ParseExponent();
+            }
+            return node;
+        }
+        ///   EXPONENT: FACTORIAL_FACTOR [ '^' EXPONENT]*
+        private ASTNode ParseExponent()
+        {
+            var node = ParseFactorialFactor();
+            if (isNext(TokenType.Exponent))
+            {
+                var op = Accept(); //consuming the ^ to call the factory later
+                node = new ExponentBinaryOperatorASTNode(op,node,ParseExponent());
             }
             return node;
         }

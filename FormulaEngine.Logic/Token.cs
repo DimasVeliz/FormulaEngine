@@ -14,7 +14,9 @@ namespace FormulaEngine.Logic
             Decimal_Separator,
             OpenParen,
             CloseParen,
-            Factorial
+            Factorial,
+
+            Exponent
     }
 
     public class Token

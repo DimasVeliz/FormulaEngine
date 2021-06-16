@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace FormulaEngine.Logic
@@ -13,6 +14,9 @@ namespace FormulaEngine.Logic
         public static double Evaluate(NumberASTNode node) => node.Value;
         public static double Evaluate(AdditionBinaryOperatorASTNode node) =>
         Evaluate(node.Left as dynamic) + Evaluate(node.Right as dynamic);
+
+        public static double Evaluate(ExponentBinaryOperatorASTNode node) =>
+        Math.Pow(Evaluate(node.Left as dynamic), Evaluate(node.Right as dynamic));
 
         public static double Evaluate(SubstractionBinaryOperatorASTNode node) =>
         Evaluate(node.Left as dynamic) - Evaluate(node.Right as dynamic);

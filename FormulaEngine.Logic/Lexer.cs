@@ -21,6 +21,8 @@ namespace FormulaEngine.Logic
 
         const char CLOSE_PAREN = ')';
         const char FACTORIAL = '!';
+        const char EXPONENT = '^';
+
 
 
 
@@ -38,9 +40,11 @@ namespace FormulaEngine.Logic
             {OPEN_PAREN,(p,v)=>new Token(TokenType.OpenParen,p,v.ToString())},
             {CLOSE_PAREN,(p,v)=>new Token(TokenType.CloseParen,p,v.ToString())},
             {FACTORIAL,(p,v)=>new Token(TokenType.Factorial,p,v.ToString())},
+            {EXPONENT,(p,v)=>new Token(TokenType.Exponent,p,v.ToString())},
 
 
-            
+
+
 
 
         };
@@ -79,9 +83,9 @@ namespace FormulaEngine.Logic
 
             if (isNext(SimpleTokenMap.ContainsKey))
             {
-                var position =Position;
+                var position = Position;
                 var op = Accept();
-                token= SimpleTokenMap[op](position,op);
+                token = SimpleTokenMap[op](position, op);
             }
             return token != null;
 
@@ -110,7 +114,7 @@ namespace FormulaEngine.Logic
             sb.Append(ReadDigits());   // \d+ 
 
 
-            if (sb.Length!=0 && char.IsDigit(sb[sb.Length-1])&& isNext(E_NOTATION))
+            if (sb.Length != 0 && char.IsDigit(sb[sb.Length - 1]) && isNext(E_NOTATION))
             {
                 sb.Append(Accept()); //[eE]
 
