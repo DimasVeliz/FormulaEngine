@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fRoCQO2uzIGo/3YAMeX0NPCAKs8ZzzxCHcqUlIuBlQWGc/Kef/AE1lSoAQ6qbx70FiKw+RQPgvrb7kKTMJGDlA==",
+  "dgSpecHash": "PxQ+lLrxdGfp0El8YBDVSnLFAnj7HzfyqhwQzFPhg6DMJYiRChYpmLwzgZXiiiAJZJmHkvRLy0IDdI5AyXgkGQ==",
   "success": true,
-  "projectFilePath": "/home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Logic/FormulaEngine.Logic.csproj",
+  "projectFilePath": "/home/dimas/FormulaEngine/FormulaEngine.Logic/FormulaEngine.Logic.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

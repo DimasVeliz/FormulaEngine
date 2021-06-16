@@ -10,3 +10,15 @@
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.dll
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/ref/FormulaEngine.Logic.dll
 /home/dimas/Documents/SideProjects/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.pdb
+/home/dimas/FormulaEngine/FormulaEngine.Logic/bin/Debug/net5.0/FormulaEngine.Logic.deps.json
+/home/dimas/FormulaEngine/FormulaEngine.Logic/bin/Debug/net5.0/FormulaEngine.Logic.dll
+/home/dimas/FormulaEngine/FormulaEngine.Logic/bin/Debug/net5.0/ref/FormulaEngine.Logic.dll
+/home/dimas/FormulaEngine/FormulaEngine.Logic/bin/Debug/net5.0/FormulaEngine.Logic.pdb
+/home/dimas/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.csproj.AssemblyReference.cache
+/home/dimas/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.GeneratedMSBuildEditorConfig.editorconfig
+/home/dimas/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.AssemblyInfoInputs.cache
+/home/dimas/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.AssemblyInfo.cs
+/home/dimas/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.csproj.CoreCompileInputs.cache
+/home/dimas/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.dll
+/home/dimas/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/ref/FormulaEngine.Logic.dll
+/home/dimas/FormulaEngine/FormulaEngine.Logic/obj/Debug/net5.0/FormulaEngine.Logic.pdb
