@@ -1,53 +1,24 @@
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace FormulaEngine.Logic
 {
-    public class FunctionFactory
-    {
-        public static Dictionary<TokenType, Func<Token, ASTNode, ASTNode, BinaryOperatorASTNode>> Operations = new Dictionary<TokenType, Func<Token, ASTNode, ASTNode, BinaryOperatorASTNode>>()
-        {
-            {TokenType.Addition,(t,l,r)=>new AdditionBinaryOperatorASTNode(t,l,r)},
-            {TokenType.Minus,(t,l,r)=>new SubstractionBinaryOperatorASTNode(t,l,r)},
-            {TokenType.Multiplication,(t,l,r)=>new MultiplicationBinaryOperatorASTNode(t,l,r)},
-            {TokenType.Division,(t,l,r)=>new DivisionBinaryOperatorASTNode(t,l,r)},
-
-        };
-
-
-        //built-in functions (unary)
-        public static double sin(double nodeValue) => Math.Sin(nodeValue);
-        public static double con(double nodeValue) => Math.Cos(nodeValue);
-        public static double tan(double nodeValue) => Math.Tan(nodeValue);
-        public static double sqrt(double nodeValue) => Math.Sqrt(nodeValue);
-        public static double log(double arg) => Math.Log(arg);
-
-
-
-        //built-int functions (binary)
-        public static double min(double left, double right) => Math.Min(left, right);
-        public static double max(double left, double right) => Math.Max(left, right);
-
-        //built-int functions (N -ary)
-        public static double dimk(double one, double two, double three) => one + two + three;
-
-
-
-    }
     /// <summary>
     /// Implements the following Production Rules
-    /// EXPRESSION: TERM [('+'|'-') TERM]*
-    ///     TERM: FACTOR [('*'|'/') FACTOR]*
-    ///     FACTOR: '-'? EXPONENT
-    ///     EXPONENT: FACTORIAL_FACTOR [ '^' EXPONENT]*
-    ///     FACTORIAL_FACTOR: PRIMARY '!'?
-    ///     PRIMARY 
-    ///             : IDENTIFIER 
-    ///             | SUB_EXPRESSION 
-    ///             | NUMBER
-    ///     SUB_EXPRESSION: '(' EXPRESSION ')'
+    ///      EXPRESSION: TERM [('+'|'-') TERM]*
+    ///            TERM: FACTOR [('*'|'/') FACTOR]*
+    ///          FACTOR: '-'? EXPONENT
+    ///        EXPONENT: FACTORIAL_FACTOR [ '^' EXPONENT]*
+    ///FACTORIAL_FACTOR: PRIMARY '!'?
+    ///         PRIMARY 
+    ///                : IDENTIFIER 
+    ///                | SUB_EXPRESSION 
+    ///                | NUMBER
+    ///      IDENTIFIER: VARIABLE | FUNCTION
+    ///        FUNCTION: FUNCTION_NAME '( FUNC_ARGS ')'
+    ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
+    ///  SUB_EXPRESSION: '(' EXPRESSION ')'
     /// </summary>
     public class Parser
     {
@@ -193,7 +164,10 @@ namespace FormulaEngine.Logic
             return node != null;
         }
 
-        ///PRIMARY: IDENTIFIER | SUB_EXPRESSION  | NUMBER
+        ///         PRIMARY 
+        ///                : IDENTIFIER 
+        ///                | SUB_EXPRESSION 
+        ///                | NUMBER
         private bool TryParsePrimary(out ASTNode node)
         {
             node = null;
@@ -206,6 +180,11 @@ namespace FormulaEngine.Logic
             return node != null;
         }
 
+        ///      IDENTIFIER
+        ///                : VARIABLE 
+        ///                | FUNCTION
+        ///        FUNCTION: FUNCTION_NAME '( FUNC_ARGS ')'
+        ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
         private bool TryParseIdentifier(out ASTNode node)
         {
             node = null;

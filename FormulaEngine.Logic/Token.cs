@@ -17,7 +17,8 @@ namespace FormulaEngine.Logic
         Factorial,
 
         Exponent,
-        Identifier
+        Identifier,
+        Arg_Separator
     }
 
     public class Token

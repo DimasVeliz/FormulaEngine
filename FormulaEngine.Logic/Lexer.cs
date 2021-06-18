@@ -23,6 +23,9 @@ namespace FormulaEngine.Logic
         const char FACTORIAL = '!';
         const char EXPONENT = '^';
 
+        const char ARG_SEPARATOR = '^';
+
+
 
 
 
@@ -41,11 +44,7 @@ namespace FormulaEngine.Logic
             {CLOSE_PAREN,(p,v)=>new Token(TokenType.CloseParen,p,v.ToString())},
             {FACTORIAL,(p,v)=>new Token(TokenType.Factorial,p,v.ToString())},
             {EXPONENT,(p,v)=>new Token(TokenType.Exponent,p,v.ToString())},
-
-
-
-
-
+            {ARG_SEPARATOR,(p,v)=>new Token(TokenType.Arg_Separator,p,v.ToString())},
 
         };
         readonly SourceScanner _scanner;
