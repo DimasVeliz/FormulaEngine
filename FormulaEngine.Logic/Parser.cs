@@ -15,6 +15,22 @@ namespace FormulaEngine.Logic
             {TokenType.Division,(t,l,r)=>new DivisionBinaryOperatorASTNode(t,l,r)},
 
         };
+
+        public static Dictionary<string,Func<double,double>> BuiltInUnaryMathFunction= new Dictionary<string, Func<double, double>>()
+        {
+            {"sin",(nodeValue)=>Math.Sin(nodeValue)},
+            {"cos",(nodeValue)=>Math.Cos(nodeValue)},
+            {"tan",(nodeValue)=>Math.Tan(nodeValue)},            
+            {"sqrt",(nodeValue)=>Math.Sqrt(nodeValue)}            
+        };
+
+        public static Dictionary<string,Func<double,double,double>> BuiltInBinaryMathFunction= new Dictionary<string, Func<double, double,double>>()
+        {
+            {"min",(left,right)=>Math.Min(left,right)},
+            {"max",(left,right)=>Math.Max(left,right)},
+            {"log",(left,right)=>Math.Log(left,right)}
+        };
+
     }
     /// <summary>
     /// Implements the following Production Rules
