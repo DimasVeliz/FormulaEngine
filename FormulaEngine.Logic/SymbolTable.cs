@@ -90,6 +90,8 @@ namespace FormulaEngine.Logic
         }
 
 
+
+        //support for user-defined variables
         public bool IsVariableDefinedInCurrentScope(string variableName) =>
         CurrentScope.IsVariableDefined(variableName);
 
@@ -114,6 +116,10 @@ namespace FormulaEngine.Logic
         }
 
 
+       
+       
+        //support for user-defined functions
+       
         public bool IsFunctionDefined(string functionName) => _functions.ContainsKey(functionName);
         public void DefineFunction(string functionName, FuncDefStatement funcStatement) =>
         _functions.Add(functionName, funcStatement);
@@ -126,6 +132,7 @@ namespace FormulaEngine.Logic
 
 
 
+        //support for built-in variables and function
 
         public void AddOrUpdateALanguageSymbol(List<VNameValue> variables)
         {
@@ -158,8 +165,6 @@ namespace FormulaEngine.Logic
 
         public SymbolTableEntry Get(string identifier) =>
          GlobalEntries.ContainsKey(identifier.ToLower()) ? GlobalEntries[identifier.ToLower()] : null;
-
-
 
         public void AddFunctionALanguageSymbol<T>()
         {

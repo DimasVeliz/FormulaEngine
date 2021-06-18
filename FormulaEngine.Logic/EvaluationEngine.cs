@@ -8,8 +8,8 @@ namespace FormulaEngine.Logic
     {
         private readonly SymbolTable _symbolTable = new SymbolTable();
 
-        public void AddBuiltInFunction<T>() =>_symbolTable.AddFunction<T>();
-        public void AddBuiltInGlobalVariables( List<VNameValue> variables) =>_symbolTable.AddOrUpdate(variables);
+        public void AddBuiltInFunction<T>() =>_symbolTable.AddFunctionALanguageSymbol<T>();
+        public void AddBuiltInGlobalVariables( List<VNameValue> variables) =>_symbolTable.AddOrUpdateALanguageSymbol(variables);
 
         public double Evaluate(string expression)
         {
