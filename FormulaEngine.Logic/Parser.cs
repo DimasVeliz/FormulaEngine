@@ -48,7 +48,15 @@ namespace FormulaEngine.Logic
             ASTNode node;
 
 
-            return TryParseExpression(out node) ? node : null;
+            if (TryParseExpression(out node))
+            {
+                Expect(TokenType.EOE);
+                return node;
+            }
+            else
+            {
+                throw new Exception("Unable to parse the expression");
+            }
         }
 
         private bool TryParseExpression(out ASTNode node)

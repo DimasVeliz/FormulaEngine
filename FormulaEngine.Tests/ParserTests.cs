@@ -60,6 +60,17 @@ namespace FormulaEngine.Tests
 
 
         }
+        [Fact]
+        public void ParserTestUnbalanced()
+        {
+            var expression = "1 +(2+3))";
+
+
+
+            Assert.Throws<Exception>(() => new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse());
+
+
+        }
 
 
         [Fact]
