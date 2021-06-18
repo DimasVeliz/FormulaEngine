@@ -9,10 +9,11 @@ namespace FormulaEngine.Logic
         private readonly SymbolTable _symbolTable = new SymbolTable();
 
         public void AddBuiltInFunction<T>() =>_symbolTable.AddFunction<T>();
+        public void AddBuiltInGlobalVariables( List<VNameValue> variables) =>_symbolTable.AddOrUpdate(variables);
 
-        public double Evaluate(string expression, List<VNameValue> variables)
+        public double Evaluate(string expression)
         {
-            _symbolTable.AddOrUpdate(variables); //filling it up
+             //filling it up
             var astRoot = new Parser(new Lexer(new SourceScanner(expression)), _symbolTable).Parse();
 
 

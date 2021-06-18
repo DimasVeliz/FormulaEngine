@@ -14,7 +14,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2^3";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression);
 
 
             //Then
@@ -27,7 +27,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2^(2+3)";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression);
 
 
             //Then
@@ -39,7 +39,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "(1 + 2)^ 3";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression);
 
 
             //Then
@@ -51,7 +51,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2 ^( 2^3)";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression);
 
 
             //Then
@@ -64,7 +64,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "( 2^3)^2";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression);
 
 
             //Then
@@ -76,7 +76,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2^2^3";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression);
 
 
             //Then
@@ -89,7 +89,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "2 ^3!^2";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression);
 
 
             //Then

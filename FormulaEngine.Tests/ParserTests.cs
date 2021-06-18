@@ -78,12 +78,14 @@ namespace FormulaEngine.Tests
         {
             var expression = "1 + x*2";
 
-            var engine = new EvaluationEngine();
             var variablesInvolved = new List<VNameValue>()
             {
                 new VNameValue{Name="x", Value=5}
             };
-            var result = engine.Evaluate(expression, variablesInvolved);
+            
+            var engine = new EvaluationEngine();
+            engine.AddBuiltInGlobalVariables(variablesInvolved);
+            var result = engine.Evaluate(expression);
 
             Assert.Equal(11, result);
 
@@ -94,12 +96,14 @@ namespace FormulaEngine.Tests
         {
             var expression = "x! + x*2";
 
-            var engine = new EvaluationEngine();
             var variablesInvolved = new List<VNameValue>()
             {
                 new VNameValue{Name="x", Value=5}
             };
-            var result = engine.Evaluate(expression, variablesInvolved);
+            
+            var engine = new EvaluationEngine();
+            engine.AddBuiltInGlobalVariables(variablesInvolved);
+            var result = engine.Evaluate(expression);
 
             Assert.Equal(130, result);
 
