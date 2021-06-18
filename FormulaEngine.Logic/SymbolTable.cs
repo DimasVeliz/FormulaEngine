@@ -10,6 +10,26 @@ namespace FormulaEngine.Logic
         Variable,
         Function
     }
+
+    public class VariableScope
+    {
+        Dictionary<string, Expression> variables = new Dictionary<string, Expression>();
+
+        public bool IsVariableDefined(string variableName) =>
+        variables.ContainsKey(variableName);
+
+        public void DefineVariable(string variableName, Expression expression) =>
+        variables.Add(variableName, expression);
+
+        public void UpdateVariable(string variableName, Expression expression) =>
+        variables[variableName] = expression;
+
+        public Expression GetVariableValue(string variableName) =>
+        variables[variableName];
+
+    }
+
+
     public class SymbolTableEntry
     {
         public SymbolTableEntry(string name, EntryType type)
@@ -44,26 +64,87 @@ namespace FormulaEngine.Logic
 
     public class SymbolTable
     {
-        private readonly Dictionary<string, SymbolTableEntry> Entries = new Dictionary<string, SymbolTableEntry>();
+        private readonly List<VariableScope> _symbolsScope = new List<VariableScope>();
+        private readonly Dictionary<string, FuncDefStatement> _functions = new Dictionary<string, FuncDefStatement>();
 
-        public void AddOrUpdate(List<VNameValue> variables)
+
+        private readonly Dictionary<string, SymbolTableEntry> GlobalEntries = new Dictionary<string, SymbolTableEntry>();
+
+
+        public VariableScope CurrentScope => _symbolsScope[_symbolsScope.Count - 1];
+
+        public SymbolTable()
+        {
+            BeginScope();
+        }
+
+        private void BeginScope() => _symbolsScope.Add(new VariableScope());
+
+
+        private void EndScope()
+        {
+            if (_symbolsScope.Count > 1)
+            {
+                _symbolsScope.RemoveAt(_symbolsScope.Count - 1);
+            }
+        }
+
+
+        public bool IsVariableDefinedInCurrentScope(string variableName) =>
+        CurrentScope.IsVariableDefined(variableName);
+
+        public void DefineVariable(string varName, Expression expression) =>
+        CurrentScope.DefineVariable(varName, expression);
+        public void UpdateVariable(string varName, Expression expression) =>
+        CurrentScope.UpdateVariable(varName, expression);
+
+        public Expression GetVariableCorrespondentExpression(string varName)
+        {
+            int currentScopeIndex = _symbolsScope.Count - 1;
+            while (currentScopeIndex > 0)
+            {
+                if (_symbolsScope[currentScopeIndex].IsVariableDefined(varName))
+                {
+                    return _symbolsScope[currentScopeIndex].GetVariableValue(varName);
+                }
+                currentScopeIndex--;
+            }
+
+            throw new Exception($"Variable {varName} undefined");
+        }
+
+
+        public bool IsFunctionDefined(string functionName) => _functions.ContainsKey(functionName);
+        public void DefineFunction(string functionName, FuncDefStatement funcStatement) =>
+        _functions.Add(functionName, funcStatement);
+        public FuncDefStatement GetFunction(string functionName) => _functions[functionName];
+
+
+
+
+
+
+
+
+
+        public void AddOrUpdateALanguageSymbol(List<VNameValue> variables)
         {
             foreach (var item in variables)
             {
-                AddOrUpdate(item.Name, item.Value);
+                AddOrUpdateALanguageSymbol(item.Name, item.Value);
             }
         }
-        public void AddOrUpdate(string identifier, double value)
+        public void AddOrUpdateALanguageSymbol(string identifier, double value)
         {
             string key = identifier.ToLower();
 
-            if (!Entries.ContainsKey(key))
+            if (!GlobalEntries.ContainsKey(key))
             {
-                Entries.Add(key, new VariableTableEntry(identifier, value));
+                GlobalEntries.Add(key, new VariableTableEntry(identifier, value));
             }
             else
             {
-                var entry = Entries[key];
+                var entry = GlobalEntries[key];
                 if (entry.Type != EntryType.Variable)
                 {
                     throw new System.Exception($"Indentifier {identifier} type mismatch");
@@ -76,11 +157,11 @@ namespace FormulaEngine.Logic
         }
 
         public SymbolTableEntry Get(string identifier) =>
-         Entries.ContainsKey(identifier.ToLower()) ? Entries[identifier.ToLower()] : null;
+         GlobalEntries.ContainsKey(identifier.ToLower()) ? GlobalEntries[identifier.ToLower()] : null;
 
 
 
-        public void AddFunction<T>()
+        public void AddFunctionALanguageSymbol<T>()
         {
             //Getting the static functions taking any number of double parameters and return double
             //and integrating them into the symbols table
@@ -92,7 +173,7 @@ namespace FormulaEngine.Logic
 
             foreach (var mInfo in methods)
             {
-                Entries.Add(mInfo.Name,new FunctionTableEntry(mInfo));
+                GlobalEntries.Add(mInfo.Name, new FunctionTableEntry(mInfo));
             }
         }
 

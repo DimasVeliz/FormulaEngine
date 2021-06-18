@@ -20,22 +20,22 @@ namespace FormulaEngine.Logic
             return Evaluate(astRoot as dynamic);
         }
 
-        public double Evaluate(ASTNode root)=>Evaluate(root as dynamic);
-        public double Evaluate(NumberASTNode node) => node.Value;
-        public double Evaluate(AdditionBinaryOperatorASTNode node) =>
+        public double Evaluate(ExpressionNode root)=>Evaluate(root as dynamic);
+        public double Evaluate(NumberExpressionNode node) => node.Value;
+        public double Evaluate(AdditionBinaryOperatorExpressionNode node) =>
         Evaluate(node.Left as dynamic) + Evaluate(node.Right as dynamic);
 
-        public double Evaluate(ExponentBinaryOperatorASTNode node) =>
+        public double Evaluate(ExponentBinaryOperatorExpressionNode node) =>
         Math.Pow(Evaluate(node.Left as dynamic), Evaluate(node.Right as dynamic));
 
-        public double Evaluate(SubstractionBinaryOperatorASTNode node) =>
+        public double Evaluate(SubstractionBinaryOperatorExpressionNode node) =>
         Evaluate(node.Left as dynamic) - Evaluate(node.Right as dynamic);
-        public double Evaluate(MultiplicationBinaryOperatorASTNode node) =>
+        public double Evaluate(MultiplicationBinaryOperatorExpressionNode node) =>
         Evaluate(node.Left as dynamic) * Evaluate(node.Right as dynamic);
-        public double Evaluate(DivisionBinaryOperatorASTNode node) =>
+        public double Evaluate(DivisionBinaryOperatorExpressionNode node) =>
         Evaluate(node.Left as dynamic) / Evaluate(node.Right as dynamic);
 
-        public double Evaluate(FactorialUnaryOperatorASTNode node)
+        public double Evaluate(FactorialUnaryOperatorExpressionNode node)
         {
             int fact(int x) => x == 0 ? 1 : x * fact(x - 1);
             int value = (int)Evaluate(node.Target as dynamic);
@@ -45,11 +45,11 @@ namespace FormulaEngine.Logic
             }
             return fact(value);
         }
-        public double Evaluate(NegationUnaryOperatorASTNode node) =>
+        public double Evaluate(NegationUnaryOperatorExpressionNode node) =>
         -1 * Evaluate(node.Target as dynamic);
 
 
-        public double Evaluate(VariableIdentifierASTNode node)
+        public double Evaluate(VariableIdentifierExpressionNode node)
         {
             var variable = _symbolTable.Get(node.Name);
             if (variable == null || variable.Type != EntryType.Variable)
@@ -59,7 +59,7 @@ namespace FormulaEngine.Logic
             return (variable as VariableTableEntry).Value;
         }
 
-        public double Evaluate(FunctionASTNode node)
+        public double Evaluate(FunctionExpressionNode node)
         {
             var variable = _symbolTable.Get(node.Name);
             if (variable == null || variable.Type != EntryType.Function)

@@ -43,9 +43,9 @@ namespace FormulaEngine.Logic
             this._symbolTable = symbolTable;
         }
 
-        public ASTNode Parse()
+        public ExpressionNode Parse()
         {
-            ASTNode node;
+            ExpressionNode node;
 
 
             if (TryParseExpression(out node))
@@ -59,7 +59,7 @@ namespace FormulaEngine.Logic
             }
         }
 
-        private bool TryParseExpression(out ASTNode node)
+        private bool TryParseExpression(out ExpressionNode node)
         {
             if (TryParseTerm(out node))
             {
@@ -87,7 +87,7 @@ namespace FormulaEngine.Logic
         }
 
         ///TERM: FACTOR [('*'|'/') FACTOR]*
-        private bool TryParseTerm(out ASTNode node)
+        private bool TryParseTerm(out ExpressionNode node)
         {
             if (TryParseFactor(out node))
             {
@@ -116,7 +116,7 @@ namespace FormulaEngine.Logic
 
 
         ///   FACTOR: '-'? EXPONENT
-        private bool TryParseFactor(out ASTNode node)
+        private bool TryParseFactor(out ExpressionNode node)
         {
             node = null;
             if (isNext(TokenType.Minus))
@@ -125,7 +125,7 @@ namespace FormulaEngine.Logic
                 var op = Accept();
                 if (TryParseExponent(out node))
                 {
-                    node = new NegationUnaryOperatorASTNode(op, node);
+                    node = new NegationUnaryOperatorExpressionNode(op, node);
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace FormulaEngine.Logic
             return node != null;
         }
         ///   EXPONENT: FACTORIAL_FACTOR [ '^' EXPONENT]*
-        private bool TryParseExponent(out ASTNode node)
+        private bool TryParseExponent(out ExpressionNode node)
         {
             if (TryParseFactorialFactor(out node))
             {
@@ -151,7 +151,7 @@ namespace FormulaEngine.Logic
                     if (TryParseExponent(out var rightSide))
                     {
 
-                        node = new ExponentBinaryOperatorASTNode(op, node, rightSide);
+                        node = new ExponentBinaryOperatorExpressionNode(op, node, rightSide);
                     }
                 }
             }
@@ -160,13 +160,13 @@ namespace FormulaEngine.Logic
         }
 
         ///     FACTORIAL_FACTOR: PRIMARY '!'?
-        private bool TryParseFactorialFactor(out ASTNode node)
+        private bool TryParseFactorialFactor(out ExpressionNode node)
         {
             if (TryParsePrimary(out node))
             {
                 if (isNext(TokenType.Factorial))
                 {
-                    node = new FactorialUnaryOperatorASTNode(Accept(), node);
+                    node = new FactorialUnaryOperatorExpressionNode(Accept(), node);
                 }
             }
 
@@ -177,7 +177,7 @@ namespace FormulaEngine.Logic
         ///                : IDENTIFIER 
         ///                | SUB_EXPRESSION 
         ///                | NUMBER
-        private bool TryParsePrimary(out ASTNode node)
+        private bool TryParsePrimary(out ExpressionNode node)
         {
             node = null;
 
@@ -197,7 +197,7 @@ namespace FormulaEngine.Logic
         ///                | FUNCTION
         ///        FUNCTION: FUNCTION_NAME '( FUNC_ARGS ')'
         ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
-        private bool TryParseIdentifier(out ASTNode node)
+        private bool TryParseIdentifier(out ExpressionNode node)
         {
             if (TryParseVariable(out node))
                 return true;
@@ -206,7 +206,7 @@ namespace FormulaEngine.Logic
 
             return false;
         }
-        private bool TryParseVariable(out ASTNode node)
+        private bool TryParseVariable(out ExpressionNode node)
         {
             node = null;
             if (isNext(TokenType.Identifier))
@@ -220,7 +220,7 @@ namespace FormulaEngine.Logic
                 }
                 if (entry.Type == EntryType.Variable)
                 {
-                    node = new VariableIdentifierASTNode(Accept());
+                    node = new VariableIdentifierExpressionNode(Accept());
                 }
 
             }
@@ -229,7 +229,7 @@ namespace FormulaEngine.Logic
         }
         ///        FUNCTION: FUNCTION_NAME '( FUNC_ARGS ')'
         ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
-        private bool TryParseFunction(out ASTNode node)
+        private bool TryParseFunction(out ExpressionNode node)
         {
             node = null;
             if (isNext(TokenType.Identifier))
@@ -243,12 +243,12 @@ namespace FormulaEngine.Logic
                 }
                 if (entry.Type == EntryType.Function)
                 {
-                    node = new FunctionASTNode(Accept());
+                    node = new FunctionExpressionNode(Accept());
                     Expect(TokenType.OpenParen);
                     Accept();
                     if (TryParseFuncArgs(out var listOfArgs))
                     {
-                        (node as FunctionASTNode).ArgumentsNodes.AddRange(listOfArgs);
+                        (node as FunctionExpressionNode).ArgumentsNodes.AddRange(listOfArgs);
                     }
                     Expect(TokenType.CloseParen);
                     Accept();
@@ -260,9 +260,9 @@ namespace FormulaEngine.Logic
         }
 
         ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
-        private bool TryParseFuncArgs(out List<ASTNode> argumentNodes)
+        private bool TryParseFuncArgs(out List<ExpressionNode> argumentNodes)
         {
-            argumentNodes = new List<ASTNode>();
+            argumentNodes = new List<ExpressionNode>();
 
             if (TryParseExpression(out var expNode))
             {
@@ -284,19 +284,19 @@ namespace FormulaEngine.Logic
         }
 
         ///NUMBER: [0-9]+
-        private bool TryParseNumber(out ASTNode node)
+        private bool TryParseNumber(out ExpressionNode node)
         {
             node = null;
             if (isNext(TokenType.Number))
             {
-                node = new NumberASTNode(Accept());
+                node = new NumberExpressionNode(Accept());
             }
 
             return node != null;
 
         }
 
-        private bool TryParseSubExpression(out ASTNode node)
+        private bool TryParseSubExpression(out ExpressionNode node)
         {
             node = null;
             if (isNext(TokenType.OpenParen))
@@ -321,7 +321,7 @@ namespace FormulaEngine.Logic
         private bool isNext(Predicate<TokenType> match) => match(lexer.Peek().Type);
         private Token Accept() => lexer.ReadNext();
 
-        private ASTNode CreateBinaryOperator(Token op, ASTNode left, ASTNode right)
+        private ExpressionNode CreateBinaryOperator(Token op, ExpressionNode left, ExpressionNode right)
         {
             return FunctionFactory.Operations[op.Type](op, left, right);
         }

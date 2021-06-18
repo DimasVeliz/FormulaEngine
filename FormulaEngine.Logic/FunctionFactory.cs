@@ -6,12 +6,12 @@ namespace FormulaEngine.Logic
 {
     public class FunctionFactory
     {
-        public static Dictionary<TokenType, Func<Token, ASTNode, ASTNode, BinaryOperatorASTNode>> Operations = new Dictionary<TokenType, Func<Token, ASTNode, ASTNode, BinaryOperatorASTNode>>()
+        public static Dictionary<TokenType, Func<Token, ExpressionNode, ExpressionNode, BinaryOperatorExpressionNode>> Operations = new Dictionary<TokenType, Func<Token, ExpressionNode, ExpressionNode, BinaryOperatorExpressionNode>>()
         {
-            {TokenType.Addition,(t,l,r)=>new AdditionBinaryOperatorASTNode(t,l,r)},
-            {TokenType.Minus,(t,l,r)=>new SubstractionBinaryOperatorASTNode(t,l,r)},
-            {TokenType.Multiplication,(t,l,r)=>new MultiplicationBinaryOperatorASTNode(t,l,r)},
-            {TokenType.Division,(t,l,r)=>new DivisionBinaryOperatorASTNode(t,l,r)},
+            {TokenType.Addition,(t,l,r)=>new AdditionBinaryOperatorExpressionNode(t,l,r)},
+            {TokenType.Minus,(t,l,r)=>new SubstractionBinaryOperatorExpressionNode(t,l,r)},
+            {TokenType.Multiplication,(t,l,r)=>new MultiplicationBinaryOperatorExpressionNode(t,l,r)},
+            {TokenType.Division,(t,l,r)=>new DivisionBinaryOperatorExpressionNode(t,l,r)},
 
         };
 

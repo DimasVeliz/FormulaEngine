@@ -5,32 +5,56 @@ namespace FormulaEngine.Logic
 {
     public enum TokenType
     {
-        EOE,
-        Number,
+
+        //end of file
+        EOF,
+
+        //end of line
+        New_Line,
+
+        //keywords
+        Let,
+        Set,
+        Def,
+        Eval,
+        Print,
+
+
+
+        //operations
         Addition,
         Minus,
         Multiplication,
         Division,
+        Factorial,
+        Exponent,
+        Goes_To,
+
+
+        //Grouping and other symbols
         Decimal_Separator,
         OpenParen,
         CloseParen,
-        Factorial,
+        Arg_Separator,
 
-        Exponent,
+
+        //number or identifier tokens
+        Number,
         Identifier,
-        Arg_Separator
     }
 
     public class Token
     {
-        public int Position { get; }
+        public int LinePosition { get; }
+        public int LineNumber { get; }
         public TokenType Type { get; }
         public string Value { get; }
 
-        public Token(TokenType type, int position, string value)
+        public Token(TokenType type, int linePosition, int lineNumber, string value)
         {
             Type = type;
-            Position = position;
+            LinePosition = linePosition;
+            LineNumber = lineNumber;
             Value = value;
         }
     }
