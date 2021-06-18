@@ -6,7 +6,15 @@ using System.Linq;
 namespace FormulaEngine.Logic
 {
     /// <summary>
-    /// Implements the following Production Rules
+     /// Implements the following Production Rules
+    ///         PROGRAM: STATEMENT*
+    ///       STATEMENT: (LET_STATEMENT | DEF_STATEMENT | SET_STATEMENT | EVAL_STATEMENT | PRINT_STATEMENT)
+    ///   LET_STATEMENT: 'let' VARIABLE '=>' EXPRESSION NEWLINE
+    ///   DEF_STATEMENT: 'def' LITERAL '(' VARIABLE [, VARIABLE ]*')' '=>' EXPRESSION NEWLINE
+    ///   SET_STATEMENT: 'set' VARIABLE '=>' EXPRESSION NEWLINE
+    ///  EVAL_STATEMENT: 'eval' VARIABLE '=>' EXPRESSION NEWLINE
+    /// PRINT_STATEMENT: 'print' '(' IDENTIFIER ')' NEWLINE
+    ///         NEWLINE: '\n'
     ///      EXPRESSION: TERM [('+'|'-') TERM]*
     ///            TERM: FACTOR [('*'|'/') FACTOR]*
     ///          FACTOR: '-'? EXPONENT
