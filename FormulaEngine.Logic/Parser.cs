@@ -13,7 +13,7 @@ namespace FormulaEngine.Logic
     ///   DEF_STATEMENT: 'def' LITERAL '(' VARIABLE [, VARIABLE ]*')' '=>' EXPRESSION NEWLINE
     ///   SET_STATEMENT: 'set' VARIABLE '=>' EXPRESSION NEWLINE
     ///  EVAL_STATEMENT: 'eval' VARIABLE '=>' EXPRESSION NEWLINE
-    /// PRINT_STATEMENT: 'print' VARIABLE | EXPRESSION NEWLINE
+    /// PRINT_STATEMENT: 'print' '(' IDENTIFIER ')' NEWLINE
     ///         NEWLINE: '\n'
     ///      EXPRESSION: TERM [('+'|'-') TERM]*
     ///            TERM: FACTOR [('*'|'/') FACTOR]*
