@@ -14,7 +14,7 @@ namespace FormulaEngine.Tests
             //Given
             var expression = "1 + 2 * 3";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
@@ -26,7 +26,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "1 + 1e5";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
@@ -38,7 +38,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "(1 + 2)*3";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
@@ -50,7 +50,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "5*(3+1)";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
@@ -62,7 +62,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "(1 + 2)*3*4";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
@@ -74,7 +74,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "5!";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
@@ -86,7 +86,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "-5!";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
@@ -98,7 +98,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "-1*(1 + 2)!";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
@@ -110,11 +110,34 @@ namespace FormulaEngine.Tests
         {
             var expression = "-(3 + 2)!";
             //When
-            var result = new EvaluationEngine().Evaluate(expression,new List<VNameValue>());
+            var result = new EvaluationEngine().Evaluate(expression, new List<VNameValue>());
 
 
             //Then
             Assert.Equal(-120, result);
+        }
+
+
+        [Fact]
+        public void CallingAndEvaluatingFunction()
+        {
+            var expression = "(1 + sqrt(64))*6";
+            var engine = new EvaluationEngine();
+            engine.AddBuiltInFunction<FunctionFactory>();
+
+            var result = engine.Evaluate(expression, new List<VNameValue>());
+            Assert.Equal(54, result);
+        }
+
+         [Fact]
+        public void CallingAndEvaluatingMultiArgFunction()
+        {
+            var expression = "(1 + max(sqrt(64),19))*5";
+            var engine = new EvaluationEngine();
+            engine.AddBuiltInFunction<FunctionFactory>();
+
+            var result = engine.Evaluate(expression, new List<VNameValue>());
+            Assert.Equal(100, result);
         }
 
     }

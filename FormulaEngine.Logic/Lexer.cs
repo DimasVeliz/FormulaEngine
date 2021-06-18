@@ -23,7 +23,7 @@ namespace FormulaEngine.Logic
         const char FACTORIAL = '!';
         const char EXPONENT = '^';
 
-        const char ARG_SEPARATOR = '^';
+        const char ARG_SEPARATOR = ',';
 
 
 

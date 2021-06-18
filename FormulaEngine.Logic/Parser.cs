@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FormulaEngine.Logic
@@ -172,12 +173,15 @@ namespace FormulaEngine.Logic
         {
             node = null;
 
-            if (!TryParseIdentifier(out node))
-                if (!TryParseNumber(out node))
-                    if (!TryParseSubExpression(out node))
-                        throw new Exception($"Invalid Expression, Expected number or open paren at {lexer.Position}");
+            if (TryParseIdentifier(out node))
+                return true;
+            if (TryParseNumber(out node))
+                return true;
 
-            return node != null;
+            if (TryParseSubExpression(out node))
+                return true;
+
+            return false;
         }
 
         ///      IDENTIFIER
@@ -187,10 +191,19 @@ namespace FormulaEngine.Logic
         ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
         private bool TryParseIdentifier(out ASTNode node)
         {
+            if (TryParseVariable(out node))
+                return true;
+            if (TryParseFunction(out node))
+                return true;
+
+            return false;
+        }
+        private bool TryParseVariable(out ASTNode node)
+        {
             node = null;
             if (isNext(TokenType.Identifier))
             {
-                var token = Accept();
+                var token = lexer.Peek();
                 var entry = _symbolTable.Get(token.Value);
                 if (entry == null)
                 {
@@ -199,15 +212,67 @@ namespace FormulaEngine.Logic
                 }
                 if (entry.Type == EntryType.Variable)
                 {
-                    node = new VariableIdentifierASTNode(token);
+                    node = new VariableIdentifierASTNode(Accept());
                 }
 
-                else
-                {
-                    //TODO: is a function
-                }
             }
             return node != null;
+
+        }
+        ///        FUNCTION: FUNCTION_NAME '( FUNC_ARGS ')'
+        ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
+        private bool TryParseFunction(out ASTNode node)
+        {
+            node = null;
+            if (isNext(TokenType.Identifier))
+            {
+                var token = lexer.Peek();
+                var entry = _symbolTable.Get(token.Value);
+                if (entry == null)
+                {
+                    throw new Exception($"Undefined Identifier {token.Value} at position: {token.Position}");
+
+                }
+                if (entry.Type == EntryType.Function)
+                {
+                    node = new FunctionASTNode(Accept());
+                    Expect(TokenType.OpenParen);
+                    Accept();
+                    if (TryParseFuncArgs(out var listOfArgs))
+                    {
+                        (node as FunctionASTNode).ArgumentsNodes.AddRange(listOfArgs);
+                    }
+                    Expect(TokenType.CloseParen);
+                    Accept();
+
+                }
+
+            }
+            return node != null;
+        }
+
+        ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
+        private bool TryParseFuncArgs(out List<ASTNode> argumentNodes)
+        {
+            argumentNodes = new List<ASTNode>();
+
+            if (TryParseExpression(out var expNode))
+            {
+                argumentNodes.Add(expNode);
+                while (isNext(TokenType.Arg_Separator))
+                {
+                    Accept();  //consuming the , element
+                    if (TryParseExpression(out expNode))
+                        argumentNodes.Add(expNode);
+                    else
+                    {
+                        throw new Exception($"Couldnt parse function arguments at position {lexer.Position}");
+                    }
+
+                }
+            }
+
+            return argumentNodes.Any();
         }
 
         ///NUMBER: [0-9]+
@@ -256,7 +321,7 @@ namespace FormulaEngine.Logic
         {
             if (!isNext(expected))
             {
-                throw new System.Exception($"Unxpected: {lexer.Peek()} at Position {lexer.Position}");
+                throw new System.Exception($"Unxpected: {lexer.Peek().Value} at Position {lexer.Position}");
             }
         }
     }

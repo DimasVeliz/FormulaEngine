@@ -52,5 +52,8 @@ namespace FormulaEngine.Tests
 
             Assert.Equal(103,result);
         }
+
+        
+
     }
 }
