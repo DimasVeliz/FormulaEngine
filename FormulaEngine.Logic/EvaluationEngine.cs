@@ -12,7 +12,7 @@ namespace FormulaEngine.Logic
         public double Evaluate(string expression, List<VNameValue> variables)
         {
             _symbolTable.AddOrUpdate(variables); //filling it up
-            var astRoot = new Parser(new Lexer(new SourceScanner(expression)),_symbolTable).Parse(expression);
+            var astRoot = new Parser(new Lexer(new SourceScanner(expression)),_symbolTable).Parse();
             
 
             return Evaluate(astRoot as dynamic);

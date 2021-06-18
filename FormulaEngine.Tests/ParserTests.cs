@@ -13,8 +13,8 @@ namespace FormulaEngine.Tests
         {
             var expression = "1 + 2";
 
-            var ast = (BinaryOperatorASTNode)new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse(expression);
-            ;
+            var ast = (BinaryOperatorASTNode)new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse();
+            
             Assert.NotNull(ast);
 
             Assert.Equal(TokenType.Addition, ast.Token.Type);
@@ -31,7 +31,7 @@ namespace FormulaEngine.Tests
         {
             var expression = "1 + 2*3";
 
-            var ast = (BinaryOperatorASTNode)new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse(expression);
+            var ast = (BinaryOperatorASTNode)new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse();
 
 
             Assert.NotNull(ast);
@@ -56,7 +56,7 @@ namespace FormulaEngine.Tests
 
 
 
-            Assert.Throws<Exception>(() => new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse(expression));
+            Assert.Throws<Exception>(() => new Parser(new Lexer(new SourceScanner(expression)), new SymbolTable()).Parse());
 
 
         }
@@ -72,9 +72,9 @@ namespace FormulaEngine.Tests
             {
                 new VNameValue{Name="x", Value=5}
             };
-            var result = engine.Evaluate(expression,variablesInvolved);
+            var result = engine.Evaluate(expression, variablesInvolved);
 
-            Assert.Equal(11,result);
+            Assert.Equal(11, result);
 
         }
 
@@ -88,9 +88,9 @@ namespace FormulaEngine.Tests
             {
                 new VNameValue{Name="x", Value=5}
             };
-            var result = engine.Evaluate(expression,variablesInvolved);
+            var result = engine.Evaluate(expression, variablesInvolved);
 
-            Assert.Equal(130,result);
+            Assert.Equal(130, result);
 
         }
     }

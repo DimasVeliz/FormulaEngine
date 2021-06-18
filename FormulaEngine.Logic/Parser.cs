@@ -43,102 +43,139 @@ namespace FormulaEngine.Logic
             this._symbolTable = symbolTable;
         }
 
-        public ASTNode Parse(string expression)
+        public ASTNode Parse()
         {
+            ASTNode node;
 
-            return ParseExpression();
+
+            return TryParseExpression(out node) ? node : null;
         }
 
-        private ASTNode ParseExpression()
+        private bool TryParseExpression(out ASTNode node)
         {
-            var left = ParseTerm();
-
-
-            while (isNext(TERM_OPERATORS))
+            if (TryParseTerm(out node))
             {
-                var op = Accept();
-                var right = ParseTerm();
-                left = CreateBinaryOperator(op, left, right);
+                while (isNext(TERM_OPERATORS))
+                {
+                    var op = Accept();
+
+                    if (TryParseTerm(out var rightSide))
+                    {
+                        node = CreateBinaryOperator(op, node, rightSide);
+
+                    }
+                    else
+                    {
+
+                        throw new Exception($"Failed to parse rule Term at position {lexer.Position}");
+                    }
+                }
             }
 
-            return left;
+
+
+
+            return node != null;
         }
 
         ///TERM: FACTOR [('*'|'/') FACTOR]*
-        private ASTNode ParseTerm()
+        private bool TryParseTerm(out ASTNode node)
         {
-            var left = ParseFactor();
-
-
-            while (isNext(FACTOR_OPERATORS))
+            if (TryParseFactor(out node))
             {
-                var op = Accept();
-                var right = ParseFactor();
-                left = CreateBinaryOperator(op, left, right);
+                while (isNext(FACTOR_OPERATORS))
+                {
+                    var op = Accept();
+
+                    if (TryParseExponent(out var rightSide))
+                    {
+                        node = CreateBinaryOperator(op, node, rightSide);
+
+                    }
+                    else
+                    {
+
+                        throw new Exception($"Failed to parse rule Term at position {lexer.Position}");
+                    }
+                }
             }
 
-            return left; ;
+
+
+
+            return node != null;
         }
 
 
         ///   FACTOR: '-'? EXPONENT
-        private ASTNode ParseFactor()
+        private bool TryParseFactor(out ASTNode node)
         {
-            ASTNode node = default;
+            node = null;
             if (isNext(TokenType.Minus))
             {
-                node = new NegationUnaryOperatorASTNode(Accept(), ParseExponent());
+
+                var op = Accept();
+                if (TryParseExponent(out node))
+                {
+                    node = new NegationUnaryOperatorASTNode(op, node);
+                }
+                else
+                {
+                    throw new Exception($"Unable to parse the factor rule at position{lexer.Position}");
+
+                }
             }
             else
             {
-                node = ParseExponent();
+                TryParseExponent(out node);
             }
-            return node;
+            return node != null;
         }
         ///   EXPONENT: FACTORIAL_FACTOR [ '^' EXPONENT]*
-        private ASTNode ParseExponent()
+        private bool TryParseExponent(out ASTNode node)
         {
-            var node = ParseFactorialFactor();
-            if (isNext(TokenType.Exponent))
+            if (TryParseFactorialFactor(out node))
             {
-                var op = Accept(); //consuming the ^ to call the factory later
-                node = new ExponentBinaryOperatorASTNode(op, node, ParseExponent());
+                if (isNext(TokenType.Exponent))
+                {
+                    var op = Accept(); //consuming the ^ to call the factory later
+
+                    if (TryParseExponent(out var rightSide))
+                    {
+
+                        node = new ExponentBinaryOperatorASTNode(op, node, rightSide);
+                    }
+                }
             }
-            return node;
+
+            return node != null;
         }
 
         ///     FACTORIAL_FACTOR: PRIMARY '!'?
-        private ASTNode ParseFactorialFactor()
+        private bool TryParseFactorialFactor(out ASTNode node)
         {
-            ASTNode node = ParsePrimary();
-            if (isNext(TokenType.Factorial))
+            if (TryParsePrimary(out node))
             {
-                node = new FactorialUnaryOperatorASTNode(Accept(), node);
+                if (isNext(TokenType.Factorial))
+                {
+                    node = new FactorialUnaryOperatorASTNode(Accept(), node);
+                }
             }
-            return node;
+
+            return node != null;
         }
 
         ///PRIMARY: IDENTIFIER | SUB_EXPRESSION  | NUMBER
-        private ASTNode ParsePrimary()
+        private bool TryParsePrimary(out ASTNode node)
         {
-            ASTNode node;
+            node = null;
 
-            if (TryParseIdentifier(out node))
-            {
-                return node;
-            }
+            if (!TryParseIdentifier(out node))
+                if (!TryParseNumber(out node))
+                    if (!TryParseSubExpression(out node))
+                        throw new Exception($"Invalid Expression, Expected number or open paren at {lexer.Position}");
 
-            if (TryParseNumber(out node))
-            {
-                return node;
-            }
-
-            if (TryParseSubExpression(out node))
-            {
-                return node;
-            }
-
-            throw new Exception($"Invalid Expression, Expected number or open paren at {lexer.Position}");
+            return node != null;
         }
 
         private bool TryParseIdentifier(out ASTNode node)
@@ -147,7 +184,7 @@ namespace FormulaEngine.Logic
             if (isNext(TokenType.Identifier))
             {
                 var token = Accept();
-                var entry= _symbolTable.Get(token.Value);
+                var entry = _symbolTable.Get(token.Value);
                 if (entry == null)
                 {
                     throw new Exception($"Undefined Identifier {token.Value} at position: {token.Position}");
@@ -185,9 +222,13 @@ namespace FormulaEngine.Logic
             if (isNext(TokenType.OpenParen))
             {
                 Accept(); //consumes the open parent ( 
-                node = ParseExpression();
-                Expect(TokenType.CloseParen);
-                Accept(); //consumes the close parent )
+
+                if (TryParseExpression(out node))
+                {
+
+                    Expect(TokenType.CloseParen);
+                    Accept(); //consumes the close parent )
+                }
             }
             return node != null;
 
