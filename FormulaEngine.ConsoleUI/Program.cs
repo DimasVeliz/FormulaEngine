@@ -7,15 +7,15 @@ namespace FormulaEngine.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var expression ="1+2/4 -8";
+            var st = new SymbolTable();
+            st.AddFunction<FunctionFactory>();
 
-            var lexer = new Lexer(new SourceScanner(expression));
-            
-            while (lexer.Peek().Type!=TokenType.EOE)
-            {
-                var currentToken = lexer.ReadNext();
-                System.Console.WriteLine($"Token of type: {currentToken.Type} with value: {currentToken.Value} at position {currentToken.Position}");
-            }
+
+            var entry = (st.Get("sqrt")as FunctionTableEntry)
+            .MethodInfo
+            .Invoke(null,new object[]{64});
+
+            System.Console.WriteLine(entry);
         }
     }
 }

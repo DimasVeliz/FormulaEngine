@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FormulaEngine.Logic
 {
-    public static class FunctionFactory
+    public class FunctionFactory
     {
         public static Dictionary<TokenType, Func<Token, ASTNode, ASTNode, BinaryOperatorASTNode>> Operations = new Dictionary<TokenType, Func<Token, ASTNode, ASTNode, BinaryOperatorASTNode>>()
         {
@@ -16,20 +16,24 @@ namespace FormulaEngine.Logic
 
         };
 
-        public static Dictionary<string,Func<double,double>> BuiltInUnaryMathFunction= new Dictionary<string, Func<double, double>>()
-        {
-            {"sin",(nodeValue)=>Math.Sin(nodeValue)},
-            {"cos",(nodeValue)=>Math.Cos(nodeValue)},
-            {"tan",(nodeValue)=>Math.Tan(nodeValue)},            
-            {"sqrt",(nodeValue)=>Math.Sqrt(nodeValue)}            
-        };
 
-        public static Dictionary<string,Func<double,double,double>> BuiltInBinaryMathFunction= new Dictionary<string, Func<double, double,double>>()
-        {
-            {"min",(left,right)=>Math.Min(left,right)},
-            {"max",(left,right)=>Math.Max(left,right)},
-            {"log",(left,right)=>Math.Log(left,right)}
-        };
+        //built-in functions (unary)
+        public static double sin(double nodeValue) => Math.Sin(nodeValue);
+        public static double con(double nodeValue) => Math.Cos(nodeValue);
+        public static double tan(double nodeValue) => Math.Tan(nodeValue);
+        public static double sqrt(double nodeValue) => Math.Sqrt(nodeValue);
+        public static double log(double arg) => Math.Log(arg);
+
+
+
+        //built-int functions (binary)
+        public static double min(double left, double right) => Math.Min(left, right);
+        public static double max(double left, double right) => Math.Max(left, right);
+
+        //built-int functions (N -ary)
+        public static double dimk(double one, double two, double three) => one + two + three;
+
+
 
     }
     /// <summary>
@@ -216,7 +220,7 @@ namespace FormulaEngine.Logic
                 }
                 if (entry.Type == EntryType.Variable)
                 {
-                    node = new VariableIdentifierASTNode(token, token.Value);
+                    node = new VariableIdentifierASTNode(token);
                 }
 
                 else

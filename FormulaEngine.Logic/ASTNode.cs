@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 namespace FormulaEngine.Logic
 {
     //this class implements the following matching rules
@@ -18,7 +20,7 @@ namespace FormulaEngine.Logic
     public abstract class IdentifierASTNode : ASTNode
     {
 
-        protected IdentifierASTNode(Token token,string name) : base(token)
+        protected IdentifierASTNode(Token token, string name) : base(token)
         {
             Name = name;
         }
@@ -27,7 +29,14 @@ namespace FormulaEngine.Logic
     }
     public class VariableIdentifierASTNode : IdentifierASTNode
     {
-        public VariableIdentifierASTNode(Token token,string name) : base(token,name)
+        public VariableIdentifierASTNode(Token token) : base(token, token.Value)
+        {
+        }
+    }
+    public class FunctionASTNode : IdentifierASTNode
+    {
+        public List<ASTNode> ArgumentsNodes = new List<ASTNode>();
+        public FunctionASTNode(Token token) : base(token, token.Value)
         {
         }
     }
@@ -50,7 +59,7 @@ namespace FormulaEngine.Logic
     public abstract class UnaryOperatorASTNode : ASTNode
     {
 
-        public UnaryOperatorASTNode(Token token,ASTNode target) : base(token)
+        public UnaryOperatorASTNode(Token token, ASTNode target) : base(token)
         {
             Target = target;
         }
@@ -73,7 +82,7 @@ namespace FormulaEngine.Logic
 
     public abstract class BinaryOperatorASTNode : OperatorASTNode
     {
-        
+
         public ASTNode Left { get; }
         public ASTNode Right { get; }
         public BinaryOperatorASTNode(Token token, ASTNode left, ASTNode right) : base(token)
