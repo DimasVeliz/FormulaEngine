@@ -6,18 +6,19 @@ namespace FormulaEngine.Logic
 {
     public class EvaluationEngine
     {
-        private readonly SymbolTable _symbolTable = new SymbolTable();
+        private readonly SymbolTable _symbolTable;
 
         public void AddBuiltInFunction<T>() =>_symbolTable.AddFunctionALanguageSymbol<T>();
         public void AddBuiltInGlobalVariables( List<VNameValue> variables) =>_symbolTable.AddOrUpdateALanguageSymbol(variables);
 
-        public double Evaluate(string expression)
+        public  EvaluationEngine(SymbolTable symbolTable)
         {
-             //filling it up
-            var astRoot = new Parser(new Lexer(new SourceScanner(expression)), _symbolTable).Parse();
+            _symbolTable = symbolTable;
+        }
 
-
-            return Evaluate(astRoot as dynamic);
+        public double Evaluate(Expression expression)
+        {
+            return Evaluate(expression.Root as dynamic);
         }
 
         public double Evaluate(ExpressionNode root)=>Evaluate(root as dynamic);

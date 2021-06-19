@@ -121,8 +121,8 @@ namespace FormulaEngine.Logic
         //support for user-defined functions
        
         public bool IsFunctionDefined(string functionName) => _functions.ContainsKey(functionName);
-        public void DefineFunction(string functionName, FuncDefStatement funcStatement) =>
-        _functions.Add(functionName, funcStatement);
+        public void DefineFunction(FuncDefStatement funcStatement) =>
+        _functions.Add(funcStatement.Function.Name, funcStatement);
         public FuncDefStatement GetFunction(string functionName) => _functions[functionName];
 
 
