@@ -6,12 +6,16 @@ namespace FormulaEngine.Logic
 {
     public class InterpreterMPrograms
     {
-        private SymbolTable _symbolTable;
+        private SymbolTable _symbolTable= new SymbolTable();
 
         public void Execute(MProgram program)
         {
             foreach (var statement in program.Statements)
             {
+                if (statement is PrintStatement)
+                {
+                    System.Console.WriteLine(Execute(statement as PrintStatement));
+                }
                 Execute(statement as dynamic);
             }
         }

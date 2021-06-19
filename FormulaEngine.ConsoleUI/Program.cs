@@ -7,11 +7,13 @@ namespace FormulaEngine.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var sourceCode = new Parser(new Lexer(new SourceScanner("./simpleProgram.cs")),new SymbolTable());
+            var lexer = new Lexer(new SourceScanner("./simpleProgram.ml"));
+
+            var sourceCodeParsed = new Parser(lexer, new SymbolTable());
 
             var interpreter = new InterpreterMPrograms();
 
-            interpreter.Execute(sourceCode.ParseProgram());
+            interpreter.Execute(sourceCodeParsed.ParseProgram());
         }
     }
 }
