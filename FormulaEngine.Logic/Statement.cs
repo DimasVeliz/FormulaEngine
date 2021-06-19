@@ -32,6 +32,11 @@ namespace FormulaEngine.Logic
         public List<VariableIdentifierExpressionNode> ParameterNames { get; set; }
 
         public Expression Body { get; set; }
+
+        public FuncDefStatement()
+        {
+            ParameterNames= new List<VariableIdentifierExpressionNode>();
+        }
     }
     public class PrintStatement : Statement
     {

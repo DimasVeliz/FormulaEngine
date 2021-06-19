@@ -49,6 +49,7 @@ namespace FormulaEngine.Logic
         public NumberExpressionNode(Token token) : base(token)
         {
         }
+        
 
     }
 

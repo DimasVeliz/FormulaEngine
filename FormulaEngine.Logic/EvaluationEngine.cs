@@ -8,10 +8,10 @@ namespace FormulaEngine.Logic
     {
         private readonly SymbolTable _symbolTable;
 
-        public void AddBuiltInFunction<T>() =>_symbolTable.AddFunctionALanguageSymbol<T>();
-        public void AddBuiltInGlobalVariables( List<VNameValue> variables) =>_symbolTable.AddOrUpdateALanguageSymbol(variables);
+        public void AddBuiltInFunction<T>() => _symbolTable.AddFunctionALanguageSymbol<T>();
+        public void AddBuiltInGlobalVariables(List<VNameValue> variables) => _symbolTable.AddOrUpdateALanguageSymbol(variables);
 
-        public  EvaluationEngine(SymbolTable symbolTable)
+        public EvaluationEngine(SymbolTable symbolTable)
         {
             _symbolTable = symbolTable;
         }
@@ -21,7 +21,7 @@ namespace FormulaEngine.Logic
             return Evaluate(expression.Root as dynamic);
         }
 
-        public double Evaluate(ExpressionNode root)=>Evaluate(root as dynamic);
+        public double Evaluate(ExpressionNode root) => Evaluate(root as dynamic);
         public double Evaluate(NumberExpressionNode node) => node.Value;
         public double Evaluate(AdditionBinaryOperatorExpressionNode node) =>
         Evaluate(node.Left as dynamic) + Evaluate(node.Right as dynamic);
@@ -54,16 +54,48 @@ namespace FormulaEngine.Logic
         {
             var variable = _symbolTable.GetVariableCorrespondentExpression(node.Name);
 
-            
+
             if (variable == null)
             {
                 throw new Exception($"Error evaluating the variable ");
             }
-            return (variable.Root as NumberExpressionNode).Value;
+            double result = Evaluate(variable.Root as dynamic);
+            return result;
         }
 
         public double Evaluate(FunctionExpressionNode node)
         {
+            var userDefinedFunctionExist = _symbolTable.IsFunctionDefined(node.Name);
+            if (userDefinedFunctionExist)
+            {
+                var localFunction = _symbolTable.GetFunction(node.Name);
+
+                if (localFunction.ParameterNames.Count != node.ArgumentsNodes.Count)
+                {
+                    throw new Exception($"Function {node.Name} is missing arguments");
+                }
+
+                _symbolTable.BeginScope();
+
+                for (int i = 0; i < localFunction.ParameterNames.Count; i++)
+                {
+                    var argValue = Evaluate(node.ArgumentsNodes[i]);
+
+                    var expression = new Expression
+                    {
+                        Root = new NumberExpressionNode(new Token(TokenType.Number, -1, -1, argValue.ToString()))
+                    };
+                    _symbolTable.DefineVariable(localFunction.ParameterNames[i].Name, expression);
+                }
+
+                var result = Evaluate(localFunction.Body as dynamic);
+                _symbolTable.EndScope();
+
+
+                return result;
+            }
+
+            // attempting to return a built-in function
             var variable = _symbolTable.Get(node.Name);
             if (variable == null || variable.Type != EntryType.Function)
             {
@@ -71,7 +103,7 @@ namespace FormulaEngine.Logic
             }
             return (double)(variable as FunctionTableEntry)
             .MethodInfo
-            .Invoke(null, node.ArgumentsNodes.Select(arg =>Evaluate(arg as dynamic)).ToArray());
+            .Invoke(null, node.ArgumentsNodes.Select(arg => Evaluate(arg as dynamic)).ToArray());
         }
     }
 

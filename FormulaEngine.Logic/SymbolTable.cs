@@ -78,10 +78,10 @@ namespace FormulaEngine.Logic
             BeginScope();
         }
 
-        private void BeginScope() => _symbolsScope.Add(new VariableScope());
+        public void BeginScope() => _symbolsScope.Add(new VariableScope());
 
 
-        private void EndScope()
+        public void EndScope()
         {
             if (_symbolsScope.Count > 1)
             {

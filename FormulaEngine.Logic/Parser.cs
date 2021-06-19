@@ -92,6 +92,13 @@ namespace FormulaEngine.Logic
                 { break; }
 
             } while (true);
+            Expect(TokenType.CloseParen);
+            Accept();
+
+            Expect(TokenType.Goes_To);
+            Accept();
+
+            functionDefinition.Body = Parse();
 
             return functionDefinition;
         }
@@ -317,63 +324,48 @@ namespace FormulaEngine.Logic
         ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
         private bool TryParseIdentifier(out ExpressionNode node)
         {
-            if (TryParseVariable(out node))
-                return true;
-            if (TryParseFunction(out node))
-                return true;
-
-            return false;
-        }
-        private bool TryParseVariable(out ExpressionNode node)
-        {
-            node = null;
+            Token token = null;
+            node=null;
             if (isNext(TokenType.Identifier))
             {
-                var token = lexer.Peek();
-                //var entry = _symbolTable.Get(token.Value);
-                //if (entry == null)
-                //{
-                //throw new Exception($"Undefined Identifier {token.Value} at line {lexer.LineNumber}, col : {lexer.LinePosition}");
-                //
-                //}
-                //if (entry.Type == EntryType.Variable)
-                //{
-                node = new VariableIdentifierExpressionNode(Accept());
-                // }
+                token = Accept();
+                if (isNext(TokenType.OpenParen))
+                {
+                    if (TryParseFunction(out node, token))
+                        return true;
+                }
+                if (TryParseVariable(out node, token))
+                    return true;
 
             }
+
+
+            return node!=null;
+        }
+        private bool TryParseVariable(out ExpressionNode node, Token token)
+        {
+            node = new VariableIdentifierExpressionNode(token);
+
             return node != null;
 
         }
         ///        FUNCTION: FUNCTION_NAME '( FUNC_ARGS ')'
         ///       FUNC_ARGS: EXPRESSION [, EXPRESION ]*
-        private bool TryParseFunction(out ExpressionNode node)
+        private bool TryParseFunction(out ExpressionNode node, Token token)
         {
             node = null;
-            if (isNext(TokenType.Identifier))
+
+            node = new FunctionExpressionNode(token);
+            Expect(TokenType.OpenParen);
+            Accept();
+            if (TryParseFuncArgs(out var listOfArgs))
             {
-                var token = lexer.Peek();
-                var entry = _symbolTable.Get(token.Value);
-                if (entry == null)
-                {
-                    throw new Exception($"Undefined Identifier {token.Value} ");
-
-                }
-                if (entry.Type == EntryType.Function)
-                {
-                    node = new FunctionExpressionNode(Accept());
-                    Expect(TokenType.OpenParen);
-                    Accept();
-                    if (TryParseFuncArgs(out var listOfArgs))
-                    {
-                        (node as FunctionExpressionNode).ArgumentsNodes.AddRange(listOfArgs);
-                    }
-                    Expect(TokenType.CloseParen);
-                    Accept();
-
-                }
-
+                (node as FunctionExpressionNode).ArgumentsNodes.AddRange(listOfArgs);
             }
+            Expect(TokenType.CloseParen);
+            Accept();
+
+
             return node != null;
         }
 
