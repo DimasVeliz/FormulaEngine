@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace FormulaEngine.Logic
 {
@@ -19,8 +20,26 @@ namespace FormulaEngine.Logic
         public int LinePosition => _linePosition;
         public int LineNumber => _lineNumber;
 
-        public bool EndOfSource =>_lineNumber==SourceCode.Count && _linePosition==SourceCode[_lineNumber].Length;
+        public bool EndOfSource => _lineNumber == SourceCode.Count && _linePosition == SourceCode[_lineNumber].Length;
 
+
+        public SourceScanner(string programPath)
+        {
+            List<string> linesOfCode = new List<string>();
+            FileStream fs = new FileStream(programPath, FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(fs);
+            while (true)
+            {
+                string newLine = reader.ReadLine();
+                if (string.IsNullOrEmpty(newLine))
+                {
+                    break;
+                }
+                linesOfCode.Add(newLine);
+            }
+
+            this.SourceCode = new List<string>(linesOfCode);
+        }
         public SourceScanner(List<string> source)
         {
 

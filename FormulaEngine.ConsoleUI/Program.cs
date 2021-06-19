@@ -7,15 +7,11 @@ namespace FormulaEngine.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var st = new SymbolTable();
-            st.AddFunction<FunctionFactory>();
+            var sourceCode = new Parser(new Lexer(new SourceScanner("./simpleProgram.cs")),new SymbolTable());
 
+            var interpreter = new InterpreterMPrograms();
 
-            var entry = (st.Get("sqrt")as FunctionTableEntry)
-            .MethodInfo
-            .Invoke(null,new object[]{64});
-
-            System.Console.WriteLine(entry);
+            interpreter.Execute(sourceCode.ParseProgram());
         }
     }
 }
