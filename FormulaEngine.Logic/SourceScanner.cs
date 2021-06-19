@@ -20,7 +20,7 @@ namespace FormulaEngine.Logic
         public int LinePosition => _linePosition;
         public int LineNumber => _lineNumber;
 
-        public bool EndOfSource => _lineNumber == SourceCode.Count && _linePosition == SourceCode[_lineNumber].Length;
+        public bool EndOfSource => _lineNumber +1== SourceCode.Count && _linePosition+1 == SourceCode[_lineNumber].Length;
 
 
         public SourceScanner(string programPath)
@@ -35,6 +35,8 @@ namespace FormulaEngine.Logic
                 linesOfCode.Add(newLine);
             }
 
+            _lineNumber = 0;
+            _linePosition = -1;
             this.SourceCode = new List<string>(linesOfCode);
         }
         public SourceScanner(List<string> source)
@@ -55,6 +57,8 @@ namespace FormulaEngine.Logic
             else if (MoreLinesAvailable())
             {
                 AdvanceToNextLine();
+                return Read();
+
             }
             else
             {

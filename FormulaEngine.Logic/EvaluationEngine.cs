@@ -52,12 +52,14 @@ namespace FormulaEngine.Logic
 
         public double Evaluate(VariableIdentifierExpressionNode node)
         {
-            var variable = _symbolTable.Get(node.Name);
-            if (variable == null || variable.Type != EntryType.Variable)
+            var variable = _symbolTable.GetVariableCorrespondentExpression(node.Name);
+
+            
+            if (variable == null)
             {
-                throw new Exception($"Error evaluating the variable {variable.IdentifierName}");
+                throw new Exception($"Error evaluating the variable ");
             }
-            return (variable as VariableTableEntry).Value;
+            return (variable.Root as NumberExpressionNode).Value;
         }
 
         public double Evaluate(FunctionExpressionNode node)

@@ -77,6 +77,9 @@ namespace FormulaEngine.Logic
         {
             _scanner = scanner;
         }
+        
+        public int LineNumber =>_scanner.LineNumber;
+        public int LinePosition =>_scanner.LinePosition;
 
         public Token Peek()
         {

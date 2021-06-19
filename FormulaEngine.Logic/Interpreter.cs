@@ -6,7 +6,7 @@ namespace FormulaEngine.Logic
 {
     public class InterpreterMPrograms
     {
-        private SymbolTable _symbolTable= new SymbolTable();
+        private SymbolTable _symbolTable = new SymbolTable();
 
         public void Execute(MProgram program)
         {
@@ -16,7 +16,8 @@ namespace FormulaEngine.Logic
                 {
                     System.Console.WriteLine(Execute(statement as PrintStatement));
                 }
-                Execute(statement as dynamic);
+                else
+                    Execute(statement as dynamic);
             }
         }
 

@@ -103,7 +103,7 @@ namespace FormulaEngine.Logic
         public Expression GetVariableCorrespondentExpression(string varName)
         {
             int currentScopeIndex = _symbolsScope.Count - 1;
-            while (currentScopeIndex > 0)
+            while (currentScopeIndex >= 0)
             {
                 if (_symbolsScope[currentScopeIndex].IsVariableDefined(varName))
                 {
