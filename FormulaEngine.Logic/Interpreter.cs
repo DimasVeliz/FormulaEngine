@@ -6,7 +6,12 @@ namespace FormulaEngine.Logic
 {
     public class InterpreterMPrograms
     {
-        private SymbolTable _symbolTable = new SymbolTable();
+        private SymbolTable _symbolTable;
+        public InterpreterMPrograms()
+        {
+            _symbolTable= new SymbolTable();
+            _symbolTable.AddFunctionALanguageSymbol<FunctionFactory>();
+        }
 
         public void Execute(MProgram program)
         {
