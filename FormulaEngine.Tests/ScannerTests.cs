@@ -22,7 +22,7 @@ namespace FormulaEngine.Tests
                 counterChars++;
             }
 
-            Assert.Equal(18,counterChars);
+            Assert.Equal(97,counterChars);
 
         }
     }

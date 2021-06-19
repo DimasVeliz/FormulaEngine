@@ -61,6 +61,7 @@ namespace FormulaEngine.Logic
                 if (next.Type == TokenType.New_Line)
                 {
                     Accept();
+                    continue;
                 }
 
                 program.Statements.Add(mapperFactory[next.Type]());
@@ -105,7 +106,8 @@ namespace FormulaEngine.Logic
             var expression = Parse();
             Expect(TokenType.CloseParen);
             Accept();
-
+            Expect(TokenType.New_Line);
+            Accept();
             return new PrintStatement { Body = expression };
         }
 
@@ -118,7 +120,8 @@ namespace FormulaEngine.Logic
             Expect(TokenType.Goes_To);
             Accept();
             var expression = Parse();
-
+            Expect(TokenType.New_Line);
+            Accept();
             return new EvalStatement { Variable = new VariableIdentifierExpressionNode(variableName), Expression = expression };
         }
 
@@ -131,7 +134,8 @@ namespace FormulaEngine.Logic
             Expect(TokenType.Goes_To);
             Accept();
             var expression = Parse();
-
+            Expect(TokenType.New_Line);
+            Accept();
             return new SetStatement { Variable = new VariableIdentifierExpressionNode(variableName), Expression = expression };
         }
 
@@ -145,6 +149,8 @@ namespace FormulaEngine.Logic
             Expect(TokenType.Goes_To);
             Accept();
             var expression = Parse();
+            Expect(TokenType.New_Line);
+            Accept();
 
             return new LetStatement() { Variable = new VariableIdentifierExpressionNode(variableName), Expression = expression };
         }

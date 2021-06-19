@@ -11,6 +11,7 @@ namespace FormulaEngine.Logic
     }
     public class SourceScanner
     {
+        const char NEW_LINE_CHAR='\n';
         public List<string> SourceCode { get; set; }
         private int _linePosition;
         private int _lineNumber;
@@ -30,7 +31,7 @@ namespace FormulaEngine.Logic
             StreamReader reader = new StreamReader(fs);
             while (!reader.EndOfStream)
             {
-                string newLine = reader.ReadLine();
+                string newLine = reader.ReadLine()+NEW_LINE_CHAR;
                 
                 linesOfCode.Add(newLine);
             }

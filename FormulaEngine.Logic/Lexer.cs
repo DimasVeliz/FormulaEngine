@@ -70,6 +70,7 @@ namespace FormulaEngine.Logic
             {FACTORIAL,(pL,lN,v)=>new Token(TokenType.Factorial,pL,lN,v.ToString())},
             {EXPONENT,(pL,lN,v)=>new Token(TokenType.Exponent,pL,lN,v.ToString())},
             {ARG_SEPARATOR,(pL,lN,v)=>new Token(TokenType.Arg_Separator,pL,lN,v.ToString())},
+            {NEW_LINE,(pL,lN,v)=>new Token(TokenType.New_Line,pL,lN,v.ToString())},
 
         };
         readonly SourceScanner _scanner;
