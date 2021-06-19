@@ -6,7 +6,7 @@ using System.Linq;
 namespace FormulaEngine.Logic
 {
     /// <summary>
-     /// Implements the following Production Rules
+    /// Implements the following Production Rules
     ///         PROGRAM: STATEMENT*
     ///       STATEMENT: (LET_STATEMENT | DEF_STATEMENT | SET_STATEMENT | EVAL_STATEMENT | PRINT_STATEMENT)
     ///   LET_STATEMENT: 'let' VARIABLE '=>' EXPRESSION NEWLINE
@@ -31,6 +31,8 @@ namespace FormulaEngine.Logic
     /// </summary>
     public class Parser
     {
+        public Dictionary<TokenType, Func<Statement>> mapperFactory = new Dictionary<TokenType, Func<Statement>>();
+
         static readonly TokenType[] TERM_OPERATORS = new TokenType[] { TokenType.Addition, TokenType.Minus };
         static readonly TokenType[] FACTOR_OPERATORS = new TokenType[] { TokenType.Multiplication, TokenType.Division };
 
@@ -41,16 +43,130 @@ namespace FormulaEngine.Logic
         {
             this.lexer = lexer;
             this._symbolTable = symbolTable;
+
+            mapperFactory.Add(TokenType.Let, () => ParseLetStatement());
+            mapperFactory.Add(TokenType.Set, () => ParseSetStatement());
+            mapperFactory.Add(TokenType.Eval, () => ParseEvalStatement());
+            mapperFactory.Add(TokenType.Print, () => ParsePrintStatement());
+            mapperFactory.Add(TokenType.Def, () => ParseDefStatement());
+
+        }
+        public MProgram ParseProgram()
+        {
+            MProgram program = new MProgram();
+            while (lexer.Peek().Type != TokenType.EOF)
+            {
+                Token next = lexer.Peek();
+
+                if (next.Type == TokenType.New_Line)
+                {
+                    Accept();
+                }
+
+                program.Statements.Add(mapperFactory[next.Type]());
+            }
+
+            return program;
+        }
+        private FuncDefStatement ParseDefStatement()
+        {
+            Expect(TokenType.Def);
+            Accept();
+            Expect(TokenType.Identifier);
+            var functionName = Accept();
+            Expect(TokenType.OpenParen);
+            Accept();
+
+            var functionDefinition = new FuncDefStatement { Function = new FunctionExpressionNode(functionName) };
+
+            do
+            {
+                Expect(TokenType.Identifier);
+                functionDefinition.ParameterNames.Add(new VariableIdentifierExpressionNode(Accept()));
+                if (isNext(TokenType.Arg_Separator))
+                {
+                    Accept();
+                }
+                else
+                { break; }
+
+            } while (true);
+
+            return functionDefinition;
         }
 
-        public ExpressionNode Parse()
+        private PrintStatement ParsePrintStatement()
+        {
+            Expect(TokenType.Print);
+            Accept();
+            Expect(TokenType.OpenParen);
+            Accept();
+
+            var expression = Parse();
+            Expect(TokenType.CloseParen);
+            Accept();
+            Expect(TokenType.New_Line);
+            Accept();
+            return new PrintStatement { Body = expression };
+        }
+
+        private EvalStatement ParseEvalStatement()
+        {
+            Expect(TokenType.Eval);
+            Accept();
+            Expect(TokenType.Identifier);
+            var variableName = Accept();
+            Expect(TokenType.Goes_To);
+            Accept();
+            var expression = Parse();
+            Expect(TokenType.New_Line);
+            Accept();
+            return new EvalStatement { Variable = new VariableIdentifierExpressionNode(variableName), Expression = expression };
+        }
+
+        private SetStatement ParseSetStatement()
+        {
+            Expect(TokenType.Set);
+            Accept();
+            Expect(TokenType.Identifier);
+            var variableName = Accept();
+            Expect(TokenType.Goes_To);
+            Accept();
+            var expression = Parse();
+            Expect(TokenType.New_Line);
+            Accept();
+            return new SetStatement { Variable = new VariableIdentifierExpressionNode(variableName), Expression = expression };
+        }
+
+
+        public LetStatement ParseLetStatement()
+        {
+            Expect(TokenType.Let);
+            Accept();
+            Expect(TokenType.Identifier);
+            var variableName = Accept();
+            Expect(TokenType.Goes_To);
+            Accept();
+            var expression = Parse();
+            Expect(TokenType.New_Line);
+            Accept();
+            return new LetStatement() { Variable = new VariableIdentifierExpressionNode(variableName), Expression = expression };
+        }
+        public Expression Parse()
+        {
+            Expression expression = new Expression();
+            expression.Root = ParseExpression();
+
+            return expression;
+        }
+        public ExpressionNode ParseExpression()
         {
             ExpressionNode node;
 
 
             if (TryParseExpression(out node))
             {
-                Expect(TokenType.EOE);
+
                 return node;
             }
             else
@@ -75,7 +191,7 @@ namespace FormulaEngine.Logic
                     else
                     {
 
-                        throw new Exception($"Failed to parse rule Term at position {lexer.Position}");
+                        throw new Exception($"Failed to parse rule Term ");
                     }
                 }
             }
@@ -103,7 +219,7 @@ namespace FormulaEngine.Logic
                     else
                     {
 
-                        throw new Exception($"Failed to parse rule Term at position {lexer.Position}");
+                        throw new Exception($"Failed to parse rule Term ");
                     }
                 }
             }
@@ -129,7 +245,7 @@ namespace FormulaEngine.Logic
                 }
                 else
                 {
-                    throw new Exception($"Unable to parse the factor rule at position{lexer.Position}");
+                    throw new Exception($"Unable to parse the factor rule ");
 
                 }
             }
@@ -215,7 +331,7 @@ namespace FormulaEngine.Logic
                 var entry = _symbolTable.Get(token.Value);
                 if (entry == null)
                 {
-                    throw new Exception($"Undefined Identifier {token.Value} at position: {token.Position}");
+                    throw new Exception($"Undefined Identifier {token.Value} ");
 
                 }
                 if (entry.Type == EntryType.Variable)
@@ -238,7 +354,7 @@ namespace FormulaEngine.Logic
                 var entry = _symbolTable.Get(token.Value);
                 if (entry == null)
                 {
-                    throw new Exception($"Undefined Identifier {token.Value} at position: {token.Position}");
+                    throw new Exception($"Undefined Identifier {token.Value} ");
 
                 }
                 if (entry.Type == EntryType.Function)
@@ -274,7 +390,7 @@ namespace FormulaEngine.Logic
                         argumentNodes.Add(expNode);
                     else
                     {
-                        throw new Exception($"Couldnt parse function arguments at position {lexer.Position}");
+                        throw new Exception($"Couldnt parse function arguments ");
                     }
 
                 }
@@ -329,7 +445,7 @@ namespace FormulaEngine.Logic
         {
             if (!isNext(expected))
             {
-                throw new System.Exception($"Unxpected: {lexer.Peek().Value} at Position {lexer.Position}");
+                throw new System.Exception($"Unxpected: {lexer.Peek().Value} ");
             }
         }
     }

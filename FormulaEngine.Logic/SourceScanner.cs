@@ -19,6 +19,7 @@ namespace FormulaEngine.Logic
         public int LinePosition => _linePosition;
         public int LineNumber => _lineNumber;
 
+        public bool EndOfSource =>_lineNumber==SourceCode.Count && _linePosition==SourceCode[_lineNumber].Length;
 
         public SourceScanner(List<string> source)
         {

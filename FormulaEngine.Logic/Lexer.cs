@@ -11,40 +11,65 @@ namespace FormulaEngine.Logic
 
     public class Lexer
     {
+        //operations
         const char PLUS = '+';
         const char MINUS = '-';
         const char MULTIPLICATION = '*';
         const char DIVISION = '/';
+        const char FACTORIAL = '!';
+        const char EXPONENT = '^';
+
+
+
+        //Grouping and other symbols
+
         const char DECIMAL_SEPARATORS = '.';
 
         const char OPEN_PAREN = '(';
 
         const char CLOSE_PAREN = ')';
-        const char FACTORIAL = '!';
-        const char EXPONENT = '^';
 
         const char ARG_SEPARATOR = ',';
 
+        const char NEW_LINE ='\n';
 
 
+        //keywords
+        const string LET = "let";
+        const string SET = "set";
+        const string EVAL = "eval";
+        const string DEF = "def";
+        const string PRINT = "print";
+
+        const string GOES_TO = "=>";
 
 
 
         static readonly char[] E_NOTATION = new char[] { 'e', 'E' };
         static readonly char[] SIGN_OPERATORS = new char[] { PLUS, MINUS };
 
-        public int Position => _scanner.Position;
-        public static Dictionary<char, Func<int, char, Token>> SimpleTokenMap = new Dictionary<char, Func<int, char, Token>>()
+        public static Dictionary<string, TokenType> KeyWordMap = new Dictionary<string, TokenType>()
         {
-            {PLUS,(p,v)=>new Token(TokenType.Addition,p,v.ToString())},
-            {MINUS,(p,v)=>new Token(TokenType.Minus,p,v.ToString())},
-            {MULTIPLICATION,(p,v)=>new Token(TokenType.Multiplication,p,v.ToString())},
-            {DIVISION,(p,v)=>new Token(TokenType.Division,p,v.ToString())},
-            {OPEN_PAREN,(p,v)=>new Token(TokenType.OpenParen,p,v.ToString())},
-            {CLOSE_PAREN,(p,v)=>new Token(TokenType.CloseParen,p,v.ToString())},
-            {FACTORIAL,(p,v)=>new Token(TokenType.Factorial,p,v.ToString())},
-            {EXPONENT,(p,v)=>new Token(TokenType.Exponent,p,v.ToString())},
-            {ARG_SEPARATOR,(p,v)=>new Token(TokenType.Arg_Separator,p,v.ToString())},
+            {LET,TokenType.Let},
+            {SET,TokenType.Set},
+            {PRINT,TokenType.Print},
+            {DEF,TokenType.Def},
+            {EVAL,TokenType.Eval},
+            {GOES_TO,TokenType.Goes_To},
+
+        };
+
+        public static Dictionary<char, Func<int, int, char, Token>> SimpleTokenMap = new Dictionary<char, Func<int, int, char, Token>>()
+        {
+            {PLUS,(pL,lN,v)=>new Token(TokenType.Addition,pL,lN,v.ToString())},
+            {MINUS,(pL,lN,v)=>new Token(TokenType.Minus,pL,lN,v.ToString())},
+            {MULTIPLICATION,(pL,lN,v)=>new Token(TokenType.Multiplication,pL,lN,v.ToString())},
+            {DIVISION,(pL,lN,v)=>new Token(TokenType.Division,pL,lN,v.ToString())},
+            {OPEN_PAREN,(pL,lN,v)=>new Token(TokenType.OpenParen,pL,lN,v.ToString())},
+            {CLOSE_PAREN,(pL,lN,v)=>new Token(TokenType.CloseParen,pL,lN,v.ToString())},
+            {FACTORIAL,(pL,lN,v)=>new Token(TokenType.Factorial,pL,lN,v.ToString())},
+            {EXPONENT,(pL,lN,v)=>new Token(TokenType.Exponent,pL,lN,v.ToString())},
+            {ARG_SEPARATOR,(pL,lN,v)=>new Token(TokenType.Arg_Separator,pL,lN,v.ToString())},
 
         };
         readonly SourceScanner _scanner;
@@ -64,7 +89,7 @@ namespace FormulaEngine.Logic
         public Token ReadNext()
         {
             if (_scanner.EndOfSource)
-                return new Token(TokenType.EOE, _scanner.Position, null);
+                return new Token(TokenType.EOF, _scanner.LinePosition, _scanner.LineNumber, null);
             ConsumeWhiteSpace();
 
             Token token;
@@ -76,18 +101,39 @@ namespace FormulaEngine.Logic
 
             if (TryTokenizeIdentifier(out token))
                 return token;
+            if (TryParseGoesTo(out token))
+            {
+                return token;
+            }
 
-            throw new Exception($"Unexpected character{_scanner.Peek() } found at possition {_scanner.Position}");
+            throw new Exception($"Unexpected character{_scanner.Peek() } found at line: {_scanner.LineNumber}, col: {_scanner.LinePosition}");
         }
+
+        private bool TryParseGoesTo(out Token token)
+        {
+            token = null;
+
+            if (isNext(x => x == '='))
+            {
+                Accept();
+                Expect(x => x == '>');
+                Accept();
+                token = new Token(TokenType.Goes_To, _scanner.LinePosition - 2, _scanner.LineNumber, "=>");
+            }
+            return token != null;
+        }
+
         private bool TryTokenizeSimpleToken(out Token token)
         {
             token = null;
 
             if (isNext(SimpleTokenMap.ContainsKey))
             {
-                var position = Position;
+                var lPosition = _scanner.LinePosition;
+                var lNumber = _scanner.LineNumber;
+
                 var op = Accept();
-                token = SimpleTokenMap[op](position, op);
+                token = SimpleTokenMap[op](lPosition, lNumber, op);
             }
             return token != null;
 
@@ -104,7 +150,9 @@ namespace FormulaEngine.Logic
         {
             token = null;
             var sb = new StringBuilder();
-            var position = Position;
+
+            var lPosition = _scanner.LinePosition;
+            var lNumber = _scanner.LineNumber;
 
             sb.Append(ReadDigits());  // \d+ 
 
@@ -133,11 +181,11 @@ namespace FormulaEngine.Logic
 
             if (sb.Length > 0)
             {
-                token = new Token(TokenType.Number, position, sb.ToString());
+                token = new Token(TokenType.Number, lPosition, lNumber, sb.ToString());
             }
             if (token != null && !double.TryParse(token.Value, out _))
             {
-                throw new Exception($"Invalid numeric value/format found at position{token.Position}");
+                throw new Exception($"Invalid numeric value/format found at line {token.LineNumber}, col {token.LinePosition}");
             }
             return token != null;
         }
@@ -146,7 +194,7 @@ namespace FormulaEngine.Logic
         {
             if (!isNext(match))
             {
-                throw new Exception($"Unexpected value at position {Position}");
+                throw new Exception($"Unexpected value at at line {_scanner.LineNumber}, col {_scanner.LinePosition}");
             };
         }
 
@@ -184,7 +232,17 @@ namespace FormulaEngine.Logic
 
             if (sb.Length > 0)
             {
-                token = new Token(TokenType.Identifier, Position, sb.ToString());
+                var lPosition = _scanner.LinePosition;
+                var lNumber = _scanner.LineNumber;
+                var value = sb.ToString();
+
+                if (KeyWordMap.ContainsKey(value.ToLower()))
+                {
+                    token = new Token(KeyWordMap[value.ToLower()], lPosition, lNumber, value);
+
+                }
+                else
+                    token = new Token(TokenType.Identifier, lPosition, lNumber, value);
             }
 
 
@@ -197,6 +255,8 @@ namespace FormulaEngine.Logic
         {
             return isNext(x => possibleValues.Any(pV => pV == x));
         }
+
+
         private bool isNext(Func<char, bool> match)
         {
             var lookahead = _scanner.Peek();
@@ -205,7 +265,7 @@ namespace FormulaEngine.Logic
 
         private void ConsumeWhiteSpace()
         {
-            while (isNext(char.IsWhiteSpace))
+            while (isNext(char.IsWhiteSpace)&&!isNext(NEW_LINE))
                 Accept();
         }
     }

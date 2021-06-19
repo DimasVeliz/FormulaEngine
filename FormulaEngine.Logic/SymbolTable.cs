@@ -127,11 +127,6 @@ namespace FormulaEngine.Logic
 
 
 
-
-
-
-
-
         //support for built-in variables and function
 
         public void AddOrUpdateALanguageSymbol(List<VNameValue> variables)

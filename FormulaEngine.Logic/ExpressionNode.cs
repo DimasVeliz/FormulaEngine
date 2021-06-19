@@ -5,7 +5,7 @@ namespace FormulaEngine.Logic
 {
     public class Expression
     {
-        public ExpressionNode Root { get; }
+        public ExpressionNode Root { get; set;}
     }
 
     
