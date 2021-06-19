@@ -7,7 +7,8 @@ namespace FormulaEngine.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var lexer = new Lexer(new SourceScanner("./simpleProgram.ml"));
+            var scanner= new SourceScanner("../simpleProgram.ml");
+            var lexer = new Lexer(scanner);
 
             var sourceCodeParsed = new Parser(lexer, new SymbolTable());
 

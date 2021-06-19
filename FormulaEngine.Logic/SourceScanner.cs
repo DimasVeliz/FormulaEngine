@@ -28,13 +28,10 @@ namespace FormulaEngine.Logic
             List<string> linesOfCode = new List<string>();
             FileStream fs = new FileStream(programPath, FileMode.Open, FileAccess.Read);
             StreamReader reader = new StreamReader(fs);
-            while (true)
+            while (!reader.EndOfStream)
             {
                 string newLine = reader.ReadLine();
-                if (string.IsNullOrEmpty(newLine))
-                {
-                    break;
-                }
+                
                 linesOfCode.Add(newLine);
             }
 

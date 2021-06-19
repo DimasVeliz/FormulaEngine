@@ -2,6 +2,6 @@ let a => 5
 
 print(a)
 
-let b = 4 +3
+let b => 4 +3
 
 print(b)
