@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="editrorStyles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.js"
         integrity="sha512-CAv0l04Voko2LIdaPmkvGjH3jLsH+pmTXKFoyh5TIimAME93KjejeP9j7wSeSRXqXForv73KUZGJMn8/P98Ifg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -13,27 +14,39 @@
 
 
 <body>
-    <p>hello dimas</p>
+    <div>
 
-    <canvas id="myChart" width="200" height="200"></canvas>
+        
+        
+        <textarea rows="20" cols="80" placeholder="write your code here"></textarea>
+    </div>
+    <button>Execute</button>
+    <div>
+
+        <canvas id="myChart"></canvas>
+    </div>
+   
+
+
+
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
 
         var DATA_COUNT = 12;
         var labels = [];
-        for (let i = 0; i < DATA_COUNT; ++i) {
+        for (let i = -7; i < DATA_COUNT-7; ++i) {
             labels.push(i.toString());
         }
         var datapoints = [0, 20, 20, 60, 60, 120, NaN, 180, 120, 125, 105, 110, 170];
         var dataObjt = {
             labels: labels,
-            datasets: [ {
-                    label: 'Cubic interpolation',
-                    data: datapoints,
-                    borderColor: 'rgba(0, 255, 0, 1)',
-                    fill: false,
-                    tension: 0.4
-                }
+            datasets: [{
+                label: 'Cubic interpolation',
+                data: datapoints,
+                borderColor: 'rgba(0, 255, 0, 1)',
+                fill: false,
+                tension: 0.4
+            }
             ]
         };
 
@@ -41,7 +54,7 @@
             type: 'line',
             data: dataObjt,
             options: {
-                linetension:0,
+                linetension: 0,
                 responsive: true,
                 plugins: {
                     title: {
@@ -72,6 +85,9 @@
             },
         };
         var myChart = new Chart(ctx, configObj);
+
+
+
     </script>
 
 </body>
