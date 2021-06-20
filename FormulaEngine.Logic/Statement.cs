@@ -43,4 +43,10 @@ namespace FormulaEngine.Logic
         public Expression Body { get; set; }
 
     }
+
+    public class PlotStatement : Statement
+    {
+        public Expression Body { get; set; }
+
+    }
 }

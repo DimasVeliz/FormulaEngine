@@ -13,17 +13,32 @@ namespace FormulaEngine.Logic
             _symbolTable.AddFunctionALanguageSymbol<FunctionFactory>();
         }
 
-        public void Execute(MProgram program)
+        public InterpreterResponse Execute(MProgram program)
         {
+            List<string> output = new List<string>();
+            InterpreterResponse answer = new InterpreterResponse();
             foreach (var statement in program.Statements)
             {
                 if (statement is PrintStatement)
                 {
-                    System.Console.WriteLine(Execute(statement as PrintStatement));
+                    output.Add(Execute(statement as PrintStatement));
                 }
+
+                //else if (statement is PlotStatement)
+                //{
+                    //var expression =(statement as PlotStatement).Body.Root;
+//
+                    //if (expression is FunctionExpressionNode)
+                    //{
+                        //var function = (expression as FunctionExpressionNode);
+                    //}
+                //}
                 else
                     Execute(statement as dynamic);
             }
+
+            answer.Outputs= new List<string>(output);
+            return answer;
         }
 
         public void Execute(LetStatement statement)

@@ -4,5 +4,8 @@ FormulaEngine.Tests/bin/
 FormulaEngine.Tests/obj/
 FormulaEngine.ConsoleUI/bin/
 FormulaEngine.ConsoleUI/obj/
+FormulaEngine.WebAPI/obj/
+FormulaEngine.WebAPI/bin/
+
 
 
