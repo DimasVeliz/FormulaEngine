@@ -7,9 +7,9 @@ namespace FormulaEngine.ConsoleUI
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Paste please the source file");
-            string sourcePath = Console.ReadLine();
-            var scanner= new SourceScanner(sourcePath);
+            
+           
+            var scanner= new SourceScanner(args[0]);
             var lexer = new Lexer(scanner);
 
             var sourceCodeParsed = new Parser(lexer, new SymbolTable());
@@ -17,7 +17,12 @@ namespace FormulaEngine.ConsoleUI
             var interpreter = new InterpreterMPrograms();
             
 
-            interpreter.Execute(sourceCodeParsed.ParseProgram());
+            var result = interpreter.Execute(sourceCodeParsed.ParseProgram());
+
+            foreach (var item in result.Outputs)
+            {
+                System.Console.WriteLine(item);
+            }
         }
     }
 }

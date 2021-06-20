@@ -30,7 +30,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/FormulaEngine.ConsoleUI/bin/Debug/net5.0/FormulaEngine.ConsoleUI.dll",
-            "args": [],
+            "args": [
+                "${workspaceFolder}/CodeSamples/fullsample.ml"
+            ],
             "cwd": "${workspaceFolder}/FormulaEngine.ConsoleUI",
             "console": "internalConsole",
             "stopAtEntry": false
