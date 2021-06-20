@@ -95,7 +95,7 @@ set c =>  (a + b)/2
 
 print(c)
 
-let k = sum(sqrt(64),1) ^ 3!
+let k => sum(sqrt(64),1) ^ 3!
 
 print(k)
 
