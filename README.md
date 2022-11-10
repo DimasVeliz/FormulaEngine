@@ -1,6 +1,6 @@
 # FormulaEngine
 
-The formula engine repository is a class library written in C# to lex, parse and interprete a simple mathematical programing language. It includes also a Console Application for showing the library's functionalities as well as the necessary testing.
+The formula engine repository is a class library written in C# to lex, parse and interpret a simple mathematical programing language. It includes also a Console Application for showing the library's functionalities as well as the necessary testing.
 
 This project is inspired and based in the works of Richard Weeks to whom I personally owe lots of knoweledge, check out his youtube channel and show some love -> : https://www.youtube.com/channel/UCUg_M6wvaS-DhHpFpW7aC6w/featured 
 
